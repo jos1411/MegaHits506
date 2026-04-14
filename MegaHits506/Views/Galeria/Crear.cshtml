@@ -1,0 +1,61 @@
+﻿@model MegaHits506.Models.Galeria
+@{
+    ViewBag.Title = "Agregar a Galería";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="card-mega" style="max-width:650px; margin:0 auto">
+    <div class="card-head">🖼️ Agregar a Galería</div>
+    <div class="card-body-mega">
+        @using (Html.BeginForm("Crear", "Galeria", FormMethod.Post))
+        {
+            <div class="form-mega">
+                <div class="mb-3">
+                    <label>Evento *</label>
+                    <select name="EvIdentificador" required>
+                        <option value="">-- Seleccione un evento --</option>
+                        @foreach (var ev in ViewBag.Eventos as List<MegaHits506.Models.Evento>)
+                        {
+                            <option value="@ev.Identificador">@ev.Titulo</option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label>Tipo *</label>
+                    <select name="Tipo" required id="selectTipo">
+                        <option value="">-- Seleccione tipo --</option>
+                        <option value="FOTO">📷 FOTO</option>
+                        <option value="VIDEO">🎬 VIDEO</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label>URL *</label>
+                    <input type="text" name="Url" id="inputUrl"
+                           placeholder="https://..." required />
+                    <img id="preview" src="" alt="Vista previa"
+                         style="max-width:100%;border-radius:8px;margin-top:10px;display:none" />
+                </div>
+                <div class="mb-3">
+                    <label>Descripción</label>
+                    <textarea name="Descripcion" rows="2"></textarea>
+                </div>
+                <div class="d-flex gap-2 mt-4">
+                    <button type="submit" class="btn-blue">Guardar</button>
+                    <a href="/Galeria" class="btn-outline">Cancelar</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<script>
+    document.getElementById('inputUrl').addEventListener('input', function () {
+        var tipo = document.getElementById('selectTipo').value;
+        var preview = document.getElementById('preview');
+        if (tipo === 'FOTO' && this.value) {
+            preview.src = this.value;
+            preview.style.display = 'block';
+        } else {
+            preview.style.display = 'none';
+        }
+    });
+</script>

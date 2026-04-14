@@ -1,0 +1,80 @@
+﻿@model List<MegaHits506.Models.Galeria>
+@using System.Linq
+@{
+    ViewBag.Title = "Galería";
+    Layout = "~/Views/Shared/_LayoutPublico.cshtml";
+}
+
+<div style="background:linear-gradient(135deg,#1a1a2a 0%,var(--color-blue) 100%);
+            padding:60px 0;text-align:center;color:#fff">
+    <h1 style="font-size:42px">📸 Galería de Eventos</h1>
+    <p style="opacity:.85">Conocé el trabajo de Mega Hits 506 en eventos reales</p>
+</div>
+
+<section style="padding:60px 0;background:var(--bg-primary)">
+    <div class="container">
+        @{
+            var fotos = Model.Where(x => x.Tipo == "FOTO").ToList();
+            var videos = Model.Where(x => x.Tipo == "VIDEO").ToList();
+        }
+
+        @if (!fotos.Any() && !videos.Any())
+        {
+            <div style="text-align:center;padding:60px 0;color:var(--text-secondary)">
+                <p style="font-size:18px">Próximamente contenido disponible.</p>
+            </div>
+        }
+
+        @if (fotos.Any())
+        {
+            <h3 style="color:var(--color-blue);margin-bottom:24px;
+                       border-bottom:2px solid var(--border-color);padding-bottom:10px">
+                📷 Fotos
+            </h3>
+            <div class="row g-4 mb-5">
+                @foreach (var item in fotos)
+                {
+                    <div class="col-md-4">
+                        <div class="card-mega">
+                            <img src="@item.Url" alt="@item.Descripcion"
+                                 style="width:100%;height:220px;object-fit:cover"
+                                 onerror="this.src='https://via.placeholder.com/400x220?text=Foto'" />
+                            <div class="card-body-mega" style="padding:14px">
+                                <small style="color:var(--color-blue)">@item.Evento</small>
+                                <p style="color:var(--text-secondary);margin:4px 0 0;font-size:13px">
+                                    @item.Descripcion
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+        @if (videos.Any())
+        {
+            <h3 style="color:var(--color-blue);margin-bottom:24px;
+                       border-bottom:2px solid var(--border-color);padding-bottom:10px">
+                🎬 Videos
+            </h3>
+            <div class="row g-4">
+                @foreach (var item in videos)
+                {
+                    <div class="col-md-6">
+                        <div class="card-mega">
+                            <iframe src="@item.Url"
+                                    style="width:100%;height:220px;border:none"
+                                    allowfullscreen></iframe>
+                            <div class="card-body-mega" style="padding:14px">
+                                <small style="color:var(--color-blue)">@item.Evento</small>
+                                <p style="color:var(--text-secondary);margin:4px 0 0;font-size:13px">
+                                    @item.Descripcion
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</section>

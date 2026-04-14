@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "Inicio";
+    Layout = "~/Views/Shared/_LayoutPublico.cshtml";
+}
+
+<!-- HERO -->
+<section class="hero-section">
+    <div class="container">
+        <h1> Mega Hits 506</h1>
+        <p>Animamos tus eventos con el mejor sonido y energía.</p>
+        <a href="/Home/Eventos" class="btn-blue"
+           style="padding:14px 36px;font-size:17px;margin-right:12px">
+            Ver Eventos
+        </a>
+        <a href="/Acceso/Registro" class="btn-outline"
+           style="padding:14px 36px;font-size:17px;color:#fff;border-color:#fff">
+            Solicitar Cotización
+        </a>
+    </div>
+</section>
+
+<!-- SERVICIOS -->
+<section style="padding:80px 0;background:var(--bg-primary)">
+    <div class="container">
+        <h2 style="text-align:center;color:var(--color-blue);margin-bottom:50px;font-size:36px">
+            Nuestros Servicios
+        </h2>
+        <div class="row g-4">
+            @foreach (var srv in new[] {
+                new { icono = "🎤", titulo = "Animación de Eventos",
+                      desc = "Animamos todo tipo de eventos con profesionalismo para que tu evento sea inolvidable." },
+                new { icono = "🔊", titulo = "Equipo de Sonido",
+                      desc = "Equipo de alta calidad para garantizar la mejor experiencia auditiva en tu evento." },
+                new { icono = "🎶", titulo = "Música para Todo Evento",
+                      desc = "Bodas, quinceañeras, cabalgatas, actividades religiosas y más. Nos adaptamos a tu estilo." }
+            })
+            {
+                <div class="col-md-4">
+                    <div class="card-mega" style="text-align:center;padding:10px">
+                        <div class="card-body-mega">
+                            <div style="font-size:48px;margin-bottom:16px">@srv.icono</div>
+                            <h4 style="color:var(--color-blue);margin-bottom:10px">@srv.titulo</h4>
+                            <p style="color:var(--text-secondary)">@srv.desc</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- SOBRE NOSOTROS -->
+<section style="padding:80px 0;background:var(--bg-secondary)">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-7">
+                <h2 style="color:var(--color-blue);margin-bottom:20px">Sobre Nosotros</h2>
+                <p style="color:var(--text-secondary);line-height:1.9;margin-bottom:16px">
+                    Mega Hits 506 es una discomóvil con amplia trayectoria en el cantón de Pérez Zeledón.
+                    A lo largo de los años hemos participado en eventos importantes como actividades de la
+                    iglesia, las cabalgatas anuales en el sector de Coopeagri y eventos en el estadio de
+                    Pérez Zeledón, ganándonos la confianza de nuestra comunidad.
+                </p>
+                <p style="color:var(--text-secondary);line-height:1.9">
+                    Nuestro compromiso es brindar una experiencia de entretenimiento de calidad,
+                    utilizando equipo de alta tecnología y priorizando siempre la satisfacción del cliente.
+                </p>
+            </div>
+            <div class="col-md-5 text-center mt-4 mt-md-0">
+                <div style="font-size:120px">🎵</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- WHATSAPP -->
+<section style="padding:80px 0;background:var(--color-blue);text-align:center">
+    <div class="container">
+        <h2 style="color:#fff;margin-bottom:16px">¿Listo para contratar?</h2>
+        <p style="color:rgba(255,255,255,0.85);margin-bottom:30px">
+            Contactanos directamente por WhatsApp y coordinamos tu evento.
+        </p>
+        <a href="https://wa.me/50687660242" target="_blank"
+           style="background:#25d366;color:#fff;border:none;border-radius:10px;
+                  padding:14px 36px;font-size:17px;text-decoration:none;display:inline-block">
+            💬 Escribinos por WhatsApp
+        </a>
+    </div>
+</section>

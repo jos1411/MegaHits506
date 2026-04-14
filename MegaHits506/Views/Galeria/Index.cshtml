@@ -1,0 +1,68 @@
+﻿@model List<MegaHits506.Models.Galeria>
+@{
+    ViewBag.Title = "Galería";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert-mega success mb-4">@TempData["Mensaje"]</div>
+}
+
+<div class="card-mega">
+    <div class="card-head d-flex justify-content-between align-items-center">
+        <span>🖼️ Gestión de Galería</span>
+        <a href="/Galeria/Crear" class="btn-blue">+ Agregar</a>
+    </div>
+    <div class="card-body-mega">
+        <table class="table-mega">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Vista previa</th>
+                    <th>Tipo</th>
+                    <th>Evento</th>
+                    <th>Descripción</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Identificador</td>
+                        <td>
+                            @if (item.Tipo == "FOTO")
+                            {
+                                <img src="@item.Url" style="width:60px;height:45px;object-fit:cover;border-radius:6px"
+                                     onerror="this.style.display='none'" />
+                            }
+                            else
+                            {
+                                <span class="badge-pendiente">VIDEO</span>
+                            }
+                        </td>
+                        <td>
+                            @if (item.Tipo == "FOTO")
+                            {
+                                <span class="badge-activo">📷 FOTO</span>
+                            }
+                            else
+                            {
+                                <span class="badge-pendiente">🎬 VIDEO</span>
+                            }
+                        </td>
+                        <td>@item.Evento</td>
+                        <td>@item.Descripcion</td>
+                        <td>
+                            <a href="/Galeria/Editar/@item.Identificador" class="btn-blue">Editar</a>
+                            <a href="/Galeria/Eliminar/@item.Identificador"
+                               class="btn-red ms-1"
+                               onclick="return confirm('¿Desea eliminar este elemento?')">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

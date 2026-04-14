@@ -1,0 +1,73 @@
+﻿@model MegaHits506.Models.Cotizacion
+@{
+    ViewBag.Title = "Detalle Cotización";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="card-mega" style="max-width:650px; margin:0 auto">
+    <div class="card-head d-flex justify-content-between align-items-center">
+        <span>📋 Solicitud #@Model.Identificador</span>
+        @if (Model.EstadoSolicitud == "PENDIENTE")
+        {
+            <span class="badge-pendiente">PENDIENTE</span>
+        }
+        else if (Model.EstadoSolicitud == "ATENDIDO")
+        {
+            <span class="badge-atendido">ATENDIDO</span>
+        }
+        else
+        {
+            <span class="badge-cancelado">CANCELADO</span>
+        }
+    </div>
+    <div class="card-body-mega">
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <small style="color:var(--text-secondary)">Cliente</small>
+                <p><strong>@Model.Cliente</strong></p>
+            </div>
+            <div class="col-md-6">
+                <small style="color:var(--text-secondary)">Correo</small>
+                <p><strong>@Model.Correo</strong></p>
+            </div>
+            <div class="col-md-6">
+                <small style="color:var(--text-secondary)">Teléfono</small>
+                <p><strong>@Model.TelefonoCliente</strong></p>
+            </div>
+            <div class="col-md-6">
+                <small style="color:var(--text-secondary)">Tipo de evento</small>
+                <p><strong>@Model.TipoEvento</strong></p>
+            </div>
+            <div class="col-md-6">
+                <small style="color:var(--text-secondary)">Fecha deseada</small>
+                <p><strong>@Model.FechaEventoDeseada.ToString("dd/MM/yyyy")</strong></p>
+            </div>
+            <div class="col-12">
+                <small style="color:var(--text-secondary)">Detalles</small>
+                <p>@Model.Detalles</p>
+            </div>
+        </div>
+
+        <hr style="border-color:var(--border-color)" />
+
+        @using (Html.BeginForm("CambiarEstado", "Cotizaciones", FormMethod.Post))
+        {
+            <input type="hidden" name="id" value="@Model.Identificador" />
+            <div class="form-mega">
+                <label>Cambiar estado</label>
+                <div class="d-flex gap-2 mt-2">
+                    <select name="estado" style="max-width:200px">
+                        <option value="PENDIENTE" @(Model.EstadoSolicitud == "PENDIENTE" ? "selected" : "")>PENDIENTE</option>
+                        <option value="ATENDIDO" @(Model.EstadoSolicitud == "ATENDIDO" ? "selected" : "")>ATENDIDO</option>
+                        <option value="CANCELADO" @(Model.EstadoSolicitud == "CANCELADO" ? "selected" : "")>CANCELADO</option>
+                    </select>
+                    <button type="submit" class="btn-blue">Guardar</button>
+                </div>
+            </div>
+        }
+
+        <div class="mt-4">
+            <a href="/Cotizaciones" class="btn-outline">← Volver</a>
+        </div>
+    </div>
+</div>

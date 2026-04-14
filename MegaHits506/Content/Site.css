@@ -1,0 +1,432 @@
+﻿/* =========================================
+   MEGA HITS 506 - CSS GLOBAL
+   ========================================= */
+
+/* Variables modo claro */
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f4f6f9;
+    --bg-card: #ffffff;
+    --bg-navbar: #1a1a2a;
+    --text-primary: #1a1a2a;
+    --text-secondary: #6c757d;
+    --text-navbar: #ffffff;
+    --border-color: #dee2e6;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    /* Paleta de acciones */
+    --color-blue: #1a73e8;
+    --color-blue-dark: #1557b0;
+    --color-red: #e53935;
+    --color-red-dark: #b71c1c;
+    --color-green: #43a047;
+    --color-green-dark: #2e7d32;
+    --color-white: #ffffff;
+    --color-black: #1a1a2a;
+    --radius: 10px;
+    --transition: 0.3s ease;
+}
+
+/* Variables modo oscuro */
+body.dark-mode {
+    --bg-primary: #1a1a2a;
+    --bg-secondary: #16213e;
+    --bg-card: #16213e;
+    --bg-navbar: #0f0f1a;
+    --text-primary: #f0f0f0;
+    --text-secondary: #aaaaaa;
+    --text-navbar: #ffffff;
+    --border-color: #2a2a3a;
+    --shadow: 0 2px 12px rgba(0,0,0,0.4);
+}
+
+/* =========================================
+   BASE
+   ========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    transition: background-color var(--transition), color var(--transition);
+    min-height: 100vh;
+}
+
+/* =========================================
+   NAVBAR
+   ========================================= */
+.navbar-mega {
+    background-color: var(--bg-navbar);
+    padding: 0 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+    .navbar-mega .navbar-brand {
+        color: #fff !important;
+        font-size: 20px;
+        font-weight: 700;
+        padding: 14px 0;
+        letter-spacing: 0.5px;
+    }
+
+    .navbar-mega .nav-link {
+        color: rgba(255,255,255,0.85) !important;
+        padding: 14px 14px !important;
+        font-size: 14px;
+        transition: color var(--transition);
+    }
+
+        .navbar-mega .nav-link:hover {
+            color: #fff !important;
+            background-color: rgba(255,255,255,0.08);
+            border-radius: 6px;
+        }
+
+        .navbar-mega .nav-link.active {
+            color: #fff !important;
+            background-color: var(--color-blue);
+            border-radius: 6px;
+        }
+
+.navbar-toggler {
+    border-color: rgba(255,255,255,0.3) !important;
+}
+
+.navbar-toggler-icon {
+    filter: invert(1);
+}
+
+/* =========================================
+   BOTONES
+   ========================================= */
+.btn-blue {
+    background-color: var(--color-blue);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    padding: 8px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color var(--transition);
+    text-decoration: none;
+    display: inline-block;
+}
+
+    .btn-blue:hover {
+        background-color: var(--color-blue-dark);
+        color: #fff;
+    }
+
+.btn-red {
+    background-color: var(--color-red);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    padding: 8px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color var(--transition);
+    text-decoration: none;
+    display: inline-block;
+}
+
+    .btn-red:hover {
+        background-color: var(--color-red-dark);
+        color: #fff;
+    }
+
+.btn-green {
+    background-color: var(--color-green);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    padding: 8px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color var(--transition);
+    text-decoration: none;
+    display: inline-block;
+}
+
+    .btn-green:hover {
+        background-color: var(--color-green-dark);
+        color: #fff;
+    }
+
+.btn-outline {
+    background-color: transparent;
+    color: var(--color-blue);
+    border: 2px solid var(--color-blue);
+    border-radius: var(--radius);
+    padding: 8px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all var(--transition);
+    text-decoration: none;
+    display: inline-block;
+}
+
+    .btn-outline:hover {
+        background-color: var(--color-blue);
+        color: #fff;
+    }
+
+/* =========================================
+   CARDS
+   ========================================= */
+.card-mega {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+
+    .card-mega:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    }
+
+    .card-mega .card-head {
+        background-color: var(--color-blue);
+        color: #fff;
+        padding: 16px 20px;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+        .card-mega .card-head.red {
+            background-color: var(--color-red);
+        }
+
+    .card-mega .card-body-mega {
+        padding: 24px;
+    }
+
+/* =========================================
+   TABLAS
+   ========================================= */
+.table-mega {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+    .table-mega thead tr {
+        background-color: var(--color-blue);
+        color: #fff;
+    }
+
+    .table-mega thead th {
+        padding: 12px 16px;
+        font-weight: 600;
+        text-align: left;
+    }
+
+    .table-mega tbody tr {
+        border-bottom: 1px solid var(--border-color);
+        transition: background-color var(--transition);
+    }
+
+        .table-mega tbody tr:hover {
+            background-color: var(--bg-secondary);
+        }
+
+    .table-mega tbody td {
+        padding: 12px 16px;
+    }
+
+/* =========================================
+   FORMULARIOS
+   ========================================= */
+.form-mega label {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 13px;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.form-mega input,
+.form-mega textarea,
+.form-mega select {
+    width: 100%;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    font-size: 14px;
+    transition: border-color var(--transition);
+    outline: none;
+}
+
+    .form-mega input:focus,
+    .form-mega textarea:focus,
+    .form-mega select:focus {
+        border-color: var(--color-blue);
+        box-shadow: 0 0 0 3px rgba(26,115,232,0.15);
+    }
+
+/* =========================================
+   BADGES
+   ========================================= */
+.badge-activo {
+    background-color: var(--color-green);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.badge-inactivo {
+    background-color: var(--text-secondary);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.badge-pendiente {
+    background-color: #f59e0b;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.badge-atendido {
+    background-color: var(--color-green);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.badge-cancelado {
+    background-color: var(--color-red);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+/* =========================================
+   ALERTAS
+   ========================================= */
+.alert-mega {
+    padding: 12px 20px;
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+    .alert-mega.success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .alert-mega.error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+
+body.dark-mode .alert-mega.success {
+    background-color: #1a3a2a;
+    color: #a8d5b5;
+    border-color: #2d6a4f;
+}
+
+body.dark-mode .alert-mega.error {
+    background-color: #3a1a1a;
+    color: #f5a0a0;
+    border-color: #8b2020;
+}
+
+/* =========================================
+   TOGGLE MODO OSCURO
+   ========================================= */
+.dark-toggle {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.85);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 8px 12px;
+    transition: color var(--transition);
+}
+
+    .dark-toggle:hover {
+        color: #fff;
+    }
+
+/* =========================================
+   FOOTER
+   ========================================= */
+.footer-mega {
+    background-color: var(--bg-navbar);
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    padding: 20px;
+    font-size: 13px;
+    margin-top: 60px;
+}
+
+    .footer-mega span {
+        color: var(--color-blue);
+    }
+
+/* =========================================
+   PÁGINA PÚBLICA - HERO
+   ========================================= */
+.hero-section {
+    background: linear-gradient(135deg, #1a1a2a 0%, #1a73e8 100%);
+    padding: 100px 0;
+    text-align: center;
+    color: #fff;
+}
+
+    .hero-section h1 {
+        font-size: 52px;
+        font-weight: 800;
+        margin-bottom: 16px;
+    }
+
+    .hero-section p {
+        font-size: 20px;
+        opacity: 0.85;
+        max-width: 600px;
+        margin: 0 auto 30px;
+    }
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 32px;
+    }
+
+    .hero-section p {
+        font-size: 16px;
+    }
+
+    .table-mega {
+        font-size: 12px;
+    }
+
+        .table-mega thead th,
+        .table-mega tbody td {
+            padding: 8px 10px;
+        }
+}

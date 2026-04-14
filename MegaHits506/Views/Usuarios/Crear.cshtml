@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Nuevo Usuario";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="card-mega" style="max-width:600px; margin:0 auto">
+    <div class="card-head">👤 Nuevo Usuario</div>
+    <div class="card-body-mega">
+        @using (Html.BeginForm("Crear", "Usuarios", FormMethod.Post))
+        {
+            <div class="form-mega">
+                <div class="mb-3">
+                    <label>Nombre completo *</label>
+                    <input type="text" name="NombreCompleto" required />
+                </div>
+                <div class="mb-3">
+                    <label>Cédula</label>
+                    <input type="text" name="Cedula" />
+                </div>
+                <div class="mb-3">
+                    <label>Correo electrónico *</label>
+                    <input type="email" name="Correo" required />
+                </div>
+                <div class="mb-3">
+                    <label>Contraseña *</label>
+                    <input type="password" name="Clave" required />
+                </div>
+                <div class="mb-3">
+                    <label>Rol *</label>
+                    <select name="RoIdentificador" required>
+                        <option value="">-- Seleccione un rol --</option>
+                        @foreach (var rol in ViewBag.Roles as List<System.Web.Mvc.SelectListItem>)
+                        {
+                            <option value="@rol.Value">@rol.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="d-flex gap-2 mt-4">
+                    <button type="submit" class="btn-blue">Guardar</button>
+                    <a href="/Usuarios" class="btn-outline">Cancelar</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

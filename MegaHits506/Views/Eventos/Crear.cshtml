@@ -1,0 +1,40 @@
+﻿@model MegaHits506.Models.Evento
+@{
+    ViewBag.Title = "Nuevo Evento";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="card-mega" style="max-width:650px; margin:0 auto">
+    <div class="card-head">📅 Nuevo Evento</div>
+    <div class="card-body-mega">
+        @using (Html.BeginForm("Crear", "Eventos", FormMethod.Post))
+        {
+            <div class="form-mega">
+                <div class="mb-3">
+                    <label>Título *</label>
+                    <input type="text" name="Titulo" required />
+                </div>
+                <div class="mb-3">
+                    <label>Descripción</label>
+                    <textarea name="Descripcion" rows="3"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label>Fecha del evento</label>
+                    <input type="datetime-local" name="FechaEvento" />
+                </div>
+                <div class="mb-3">
+                    <label>Ubicación</label>
+                    <input type="text" name="Ubicacion" />
+                </div>
+                <div class="mb-3">
+                    <label>URL imagen portada</label>
+                    <input type="text" name="ImagenPortada" />
+                </div>
+                <div class="d-flex gap-2 mt-4">
+                    <button type="submit" class="btn-blue">Guardar</button>
+                    <a href="/Eventos" class="btn-outline">Cancelar</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

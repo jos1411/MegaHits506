@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "Registrarse";
+    Layout = "~/Views/Shared/_LayoutAcceso.cshtml";
+}
+
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);padding:20px 0">
+    <div style="width:100%;max-width:460px;padding:20px">
+        <div class="card-mega">
+            <div class="card-head" style="text-align:center;font-size:20px">
+                🎵 Crear cuenta
+            </div>
+            <div class="card-body-mega">
+                <p style="color:var(--text-secondary);text-align:center;margin-bottom:24px">
+                    Registrate para solicitar cotizaciones
+                </p>
+
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert-mega error mb-3">@ViewBag.Error</div>
+                }
+
+                @using (Html.BeginForm("Registro", "Acceso", FormMethod.Post))
+                {
+                    <div class="form-mega">
+                        <div class="mb-3">
+                            <label>Nombre completo *</label>
+                            <input type="text" name="NombreCompleto"
+                                   placeholder="Tu nombre completo" required />
+                        </div>
+                        <div class="mb-3">
+                            <label>Cédula</label>
+                            <input type="text" name="Cedula" placeholder="Opcional" />
+                        </div>
+                        <div class="mb-3">
+                            <label>Correo electrónico *</label>
+                            <input type="email" name="Correo"
+                                   placeholder="correo@ejemplo.com" required />
+                        </div>
+                        <div class="mb-3">
+                            <label>Contraseña *</label>
+                            <input type="password" name="Clave"
+                                   placeholder="••••••••" required />
+                        </div>
+                        <button type="submit" class="btn-blue"
+                                style="width:100%;padding:12px;font-size:15px;margin-top:8px">
+                            Crear cuenta
+                        </button>
+                    </div>
+                }
+
+                <p style="text-align:center;margin-top:20px;font-size:14px;color:var(--text-secondary)">
+                    ¿Ya tenés cuenta?
+                    <a href="/Acceso/Login" style="color:var(--color-blue)">Iniciá sesión</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

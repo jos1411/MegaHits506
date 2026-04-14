@@ -1,0 +1,63 @@
+﻿@model List<MegaHits506.Models.Cotizacion>
+@{
+    ViewBag.Title = "Cotizaciones";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert-mega success mb-4">@TempData["Mensaje"]</div>
+}
+
+<div class="card-mega">
+    <div class="card-head">📋 Solicitudes de Cotización</div>
+    <div class="card-body-mega">
+        <table class="table-mega">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Cliente</th>
+                    <th>Teléfono</th>
+                    <th>Tipo de evento</th>
+                    <th>Fecha deseada</th>
+                    <th>Recibida</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Identificador</td>
+                        <td>@item.Cliente</td>
+                        <td>@item.TelefonoCliente</td>
+                        <td>@item.TipoEvento</td>
+                        <td>@item.FechaEventoDeseada.ToString("dd/MM/yyyy")</td>
+                        <td>@item.FechaAdicion.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            @if (item.EstadoSolicitud == "PENDIENTE")
+                            {
+                                <span class="badge-pendiente">PENDIENTE</span>
+                            }
+                            else if (item.EstadoSolicitud == "ATENDIDO")
+                            {
+                                <span class="badge-atendido">ATENDIDO</span>
+                            }
+                            else
+                            {
+                                <span class="badge-cancelado">CANCELADO</span>
+                            }
+                        </td>
+                        <td>
+                            <a href="/Cotizaciones/Detalle/@item.Identificador" class="btn-blue">Ver</a>
+                            <a href="/Cotizaciones/Eliminar/@item.Identificador"
+                               class="btn-red ms-1"
+                               onclick="return confirm('¿Desea eliminar esta solicitud?')">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

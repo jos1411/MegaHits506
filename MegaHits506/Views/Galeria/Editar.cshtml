@@ -1,0 +1,48 @@
+﻿@model MegaHits506.Models.Galeria
+@{
+    ViewBag.Title = "Editar Galería";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="card-mega" style="max-width:650px; margin:0 auto">
+    <div class="card-head">✏️ Editar Galería</div>
+    <div class="card-body-mega">
+        @using (Html.BeginForm("Editar", "Galeria", FormMethod.Post))
+        {
+            <input type="hidden" name="Identificador" value="@Model.Identificador" />
+            <div class="form-mega">
+                <div class="mb-3">
+                    <label>Evento *</label>
+                    <select name="EvIdentificador" required>
+                        @foreach (var ev in ViewBag.Eventos as List<MegaHits506.Models.Evento>)
+                        {
+                            <option value="@ev.Identificador"
+                                    @(ev.Identificador == Model.EvIdentificador ? "selected" : "")>
+                                @ev.Titulo
+                            </option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label>Tipo *</label>
+                    <select name="Tipo" required>
+                        <option value="FOTO" @(Model.Tipo == "FOTO" ? "selected" : "")>📷 FOTO</option>
+                        <option value="VIDEO" @(Model.Tipo == "VIDEO" ? "selected" : "")>🎬 VIDEO</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label>URL *</label>
+                    <input type="text" name="Url" value="@Model.Url" required />
+                </div>
+                <div class="mb-3">
+                    <label>Descripción</label>
+                    <textarea name="Descripcion" rows="2">@Model.Descripcion</textarea>
+                </div>
+                <div class="d-flex gap-2 mt-4">
+                    <button type="submit" class="btn-blue">Guardar cambios</button>
+                    <a href="/Galeria" class="btn-outline">Cancelar</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

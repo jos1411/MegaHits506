@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "Ayuda";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="card-mega" style="max-width:750px; margin:0 auto">
+    <div class="card-head">❓ Ayuda del Sistema</div>
+    <div class="card-body-mega">
+
+        <p style="color:var(--text-secondary); margin-bottom:24px">
+            Versión del sistema y guía de uso para el administrador.
+        </p>
+
+        <div style="background:var(--bg-secondary);border-radius:var(--radius);padding:16px 20px;margin-bottom:12px">
+            <strong>Mega Hits 506 — Sistema Web</strong><br />
+            <small style="color:var(--text-secondary)">
+                Desarrollado por José Daniel Monge Varela —
+                Universidad Castro Carazo, 2026
+            </small><br />
+            <span class="badge-activo mt-2 d-inline-block">Versión 1.0</span>
+        </div>
+
+        @foreach (var item in new[] {
+            new { titulo = "Gestión de Eventos", desc = "Crear, editar e inactivar eventos desde el menú Eventos." },
+            new { titulo = "Gestión de Galería", desc = "Subir fotos y videos asociados a eventos. Usá URLs de imágenes o videos de YouTube." },
+            new { titulo = "Gestión de Usuarios", desc = "Ver, editar e inactivar usuarios. Solo el administrador tiene acceso." },
+            new { titulo = "Solicitudes de Cotización", desc = "Ver solicitudes de clientes y cambiar su estado a ATENDIDO o CANCELADO." },
+            new { titulo = "Cerrar Sesión", desc = "Siempre cerrá sesión al terminar para proteger la información." }
+        })
+        {
+            <div style="background:var(--bg-secondary);border-radius:var(--radius);padding:16px 20px;margin-bottom:12px">
+                <strong style="color:var(--color-blue)">@item.titulo</strong>
+                <p style="color:var(--text-secondary);margin:4px 0 0;font-size:14px">@item.desc</p>
+            </div>
+        }
+
+        <div class="mt-4">
+            <a href="/Eventos" class="btn-outline">← Volver al panel</a>
+        </div>
+    </div>
+</div>

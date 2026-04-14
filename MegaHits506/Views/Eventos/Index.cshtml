@@ -1,0 +1,62 @@
+﻿@model List<MegaHits506.Models.Evento>
+@{
+    ViewBag.Title = "Eventos";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert-mega success mb-4">@TempData["Mensaje"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert-mega error mb-4">@TempData["Error"]</div>
+}
+
+<div class="card-mega">
+    <div class="card-head d-flex justify-content-between align-items-center">
+        <span>📅 Gestión de Eventos</span>
+        <a href="/Eventos/Crear" class="btn-blue">+ Nuevo Evento</a>
+    </div>
+    <div class="card-body-mega">
+        <table class="table-mega">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Título</th>
+                    <th>Fecha</th>
+                    <th>Ubicación</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Identificador</td>
+                        <td>@item.Titulo</td>
+                        <td>@(item.FechaEvento.HasValue ? item.FechaEvento.Value.ToString("dd/MM/yyyy") : "-")</td>
+                        <td>@item.Ubicacion</td>
+                        <td>
+                            @if (item.Estado == "A")
+                            {
+                                <span class="badge-activo">Activo</span>
+                            }
+                            else
+                            {
+                                <span class="badge-inactivo">Inactivo</span>
+                            }
+                        </td>
+                        <td>
+                            <a href="/Eventos/Editar/@item.Identificador" class="btn-blue">Editar</a>
+                            <a href="/Eventos/Eliminar/@item.Identificador"
+                               class="btn-red ms-1"
+                               onclick="return confirm('¿Desea eliminar este evento?')">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

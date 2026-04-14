@@ -1,0 +1,42 @@
+﻿@model MegaHits506.Models.Evento
+@{
+    ViewBag.Title = "Editar Evento";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="card-mega" style="max-width:650px; margin:0 auto">
+    <div class="card-head">✏️ Editar Evento</div>
+    <div class="card-body-mega">
+        @using (Html.BeginForm("Editar", "Eventos", FormMethod.Post))
+        {
+            <input type="hidden" name="Identificador" value="@Model.Identificador" />
+            <div class="form-mega">
+                <div class="mb-3">
+                    <label>Título *</label>
+                    <input type="text" name="Titulo" value="@Model.Titulo" required />
+                </div>
+                <div class="mb-3">
+                    <label>Descripción</label>
+                    <textarea name="Descripcion" rows="3">@Model.Descripcion</textarea>
+                </div>
+                <div class="mb-3">
+                    <label>Fecha del evento</label>
+                    <input type="datetime-local" name="FechaEvento"
+                           value="@(Model.FechaEvento.HasValue ? Model.FechaEvento.Value.ToString("yyyy-MM-ddTHH:mm") : "")" />
+                </div>
+                <div class="mb-3">
+                    <label>Ubicación</label>
+                    <input type="text" name="Ubicacion" value="@Model.Ubicacion" />
+                </div>
+                <div class="mb-3">
+                    <label>URL imagen portada</label>
+                    <input type="text" name="ImagenPortada" value="@Model.ImagenPortada" />
+                </div>
+                <div class="d-flex gap-2 mt-4">
+                    <button type="submit" class="btn-blue">Guardar cambios</button>
+                    <a href="/Eventos" class="btn-outline">Cancelar</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

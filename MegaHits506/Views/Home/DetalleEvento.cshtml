@@ -1,0 +1,115 @@
+﻿@model MegaHits506.Models.Evento
+@using System.Linq
+@using System.Collections.Generic
+@{
+    ViewBag.Title = Model.Titulo;
+    Layout = "~/Views/Shared/_LayoutPublico.cshtml";
+    var galeria = ViewBag.Galeria as List<MegaHits506.Models.Galeria>
+                  ?? new List<MegaHits506.Models.Galeria>();
+}
+
+<div style="padding:60px 0;background:var(--bg-primary)">
+    <div class="container" style="max-width:900px">
+
+        @if (!string.IsNullOrEmpty(Model.ImagenPortada))
+        {
+            <img src="@Model.ImagenPortada" alt="@Model.Titulo"
+                 style="width:100%;max-height:400px;object-fit:cover;
+                        border-radius:var(--radius);margin-bottom:24px"
+                 onerror="this.style.display='none'" />
+        }
+
+        <div class="card-mega mb-4">
+            <div class="card-head">📅 @Model.Titulo</div>
+            <div class="card-body-mega">
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <small style="color:var(--text-secondary)">Fecha del evento</small>
+                        <p>
+                            <strong>
+                                @(Model.FechaEvento.HasValue ?
+                                Model.FechaEvento.Value.ToString("dd/MM/yyyy") :
+                                "Por confirmar")
+                            </strong>
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <small style="color:var(--text-secondary)">Ubicación</small>
+                        <p><strong>📍 @Model.Ubicacion</strong></p>
+                    </div>
+                    <div class="col-12">
+                        <small style="color:var(--text-secondary)">Descripción</small>
+                        <p style="color:var(--text-secondary)">@Model.Descripcion</p>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="/Home/Eventos" class="btn-outline">← Volver</a>
+                    <a href="/Cotizaciones/Solicitar" class="btn-blue">
+                        📋 Solicitar Cotización
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        @* GALERÍA DEL EVENTO *@
+        @if (galeria.Any())
+        {
+            var fotos = galeria.Where(x => x.Tipo == "FOTO").ToList();
+            var videos = galeria.Where(x => x.Tipo == "VIDEO").ToList();
+
+            <div class="card-mega">
+                <div class="card-head">📸 Galería del Evento</div>
+                <div class="card-body-mega">
+
+                    @if (fotos.Any())
+                    {
+                        <h5 style="color:var(--color-blue);margin-bottom:16px">📷 Fotos</h5>
+                        <div class="row g-3 mb-4">
+                            @foreach (var foto in fotos)
+                            {
+                                <div class="col-md-4">
+                                    <img src="@foto.Url" alt="@foto.Descripcion"
+                                         style="width:100%;height:180px;object-fit:cover;
+                                                border-radius:var(--radius)"
+                                         onerror="this.style.display='none'" />
+                                    @if (!string.IsNullOrEmpty(foto.Descripcion))
+                                    {
+                                        <p style="color:var(--text-secondary);
+                                                  font-size:13px;margin-top:6px">
+                                            @foto.Descripcion
+                                        </p>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    }
+
+                    @if (videos.Any())
+                    {
+                        <h5 style="color:var(--color-blue);margin-bottom:16px">🎬 Videos</h5>
+                        <div class="row g-3">
+                            @foreach (var video in videos)
+                            {
+                                <div class="col-md-6">
+                                    <iframe src="@video.Url"
+                                            style="width:100%;height:220px;border:none;
+                                                   border-radius:var(--radius)"
+                                            allowfullscreen></iframe>
+                                    @if (!string.IsNullOrEmpty(video.Descripcion))
+                                    {
+                                        <p style="color:var(--text-secondary);
+                                                  font-size:13px;margin-top:6px">
+                                            @video.Descripcion
+                                        </p>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    }
+
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

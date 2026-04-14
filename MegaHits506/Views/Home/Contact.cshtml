@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "Contacto";
+    Layout = "~/Views/Shared/_LayoutPublico.cshtml";
+}
+
+<div style="background:linear-gradient(135deg,#1a1a2a 0%,var(--color-blue) 100%);
+            padding:60px 0;text-align:center;color:#fff">
+    <h1 style="font-size:42px">📞 Contacto</h1>
+    <p style="opacity:.85">Estamos listos para hacer de tu evento algo inolvidable</p>
+</div>
+
+<section style="padding:60px 0;background:var(--bg-primary)">
+    <div class="container">
+        <div class="row g-4">
+            @foreach (var card in new[] {
+                new { icono = "📍", titulo = "Ubicación",
+                      contenido = "Arenilla de San Pedro, Pérez Zeledón, Costa Rica" },
+                new { icono = "📋", titulo = "Cotización en línea",
+                      contenido = "Completá el formulario y te contactamos a la brevedad." }
+            })
+            {
+                <div class="col-md-4">
+                    <div class="card-mega" style="text-align:center">
+                        <div class="card-body-mega">
+                            <div style="font-size:40px;margin-bottom:16px">@card.icono</div>
+                            <h4 style="color:var(--color-blue);margin-bottom:10px">@card.titulo</h4>
+                            <p style="color:var(--text-secondary)">@card.contenido</p>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="col-md-4">
+                <div class="card-mega" style="text-align:center">
+                    <div class="card-body-mega">
+                        <div style="font-size:40px;margin-bottom:16px">💬</div>
+                        <h4 style="color:var(--color-blue);margin-bottom:10px">WhatsApp</h4>
+                        <p style="color:var(--text-secondary);margin-bottom:16px">
+                            Escribinos directamente para coordinar tu evento.
+                        </p>
+                        <a href="https://wa.me/50687660242" target="_blank"
+                           style="background:#25d366;color:#fff;border:none;
+                                  border-radius:10px;padding:10px 24px;
+                                  text-decoration:none;display:inline-block">
+                            💬 WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align:center;margin-top:40px">
+            <a href="/Cotizaciones/Solicitar" class="btn-blue"
+               style="padding:14px 36px;font-size:16px">
+                📋 Solicitar Cotización
+            </a>
+        </div>
+    </div>
+</section>
