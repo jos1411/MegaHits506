@@ -7,6 +7,12 @@
 <div class="card-mega" style="max-width:600px; margin:0 auto">
     <div class="card-head">✏️ Editar Usuario</div>
     <div class="card-body-mega">
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert-mega error mb-3">@ViewBag.Error</div>
+        }
+
         @using (Html.BeginForm("Editar", "Usuarios", FormMethod.Post))
         {
             <input type="hidden" name="Identificador" value="@Model.Identificador" />

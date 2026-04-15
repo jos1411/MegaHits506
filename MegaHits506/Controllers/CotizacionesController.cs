@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using MegaHits506.AccesoDatos;
 using MegaHits506.Models;
 
@@ -8,7 +9,6 @@ namespace MegaHits506.Controllers
     {
         private ACCotizaciones acCotizaciones = new ACCotizaciones();
 
-        // GET: /Cotizaciones/ (solo admin)
         public ActionResult Index()
         {
             if (!SesionActiva() || !EsAdmin())
@@ -18,7 +18,6 @@ namespace MegaHits506.Controllers
             return View(lista);
         }
 
-        // GET: /Cotizaciones/Detalle/5 (solo admin)
         public ActionResult Detalle(int? id)
         {
             if (!SesionActiva() || !EsAdmin())
@@ -35,19 +34,22 @@ namespace MegaHits506.Controllers
             return View(cotizacion);
         }
 
-        // POST: /Cotizaciones/CambiarEstado (solo admin)
         [HttpPost]
         public ActionResult CambiarEstado(int id, string estado)
         {
             if (!SesionActiva() || !EsAdmin())
                 return RedirectToAction("Login", "Acceso");
 
-            acCotizaciones.CambiarEstado(id, estado, UsuarioNombre());
-            TempData["Mensaje"] = "Estado actualizado correctamente.";
+            string error = acCotizaciones.CambiarEstado(id, estado, UsuarioNombre());
+
+            if (error != null)
+                TempData["Error"] = error;
+            else
+                TempData["Mensaje"] = "Estado actualizado correctamente.";
+
             return RedirectToAction("Index");
         }
 
-        // GET: /Cotizaciones/Eliminar/5 (solo admin)
         public ActionResult Eliminar(int? id)
         {
             if (!SesionActiva() || !EsAdmin())
@@ -56,12 +58,16 @@ namespace MegaHits506.Controllers
             if (id == null)
                 return RedirectToAction("Index");
 
-            acCotizaciones.Eliminar(id.Value, UsuarioNombre());
-            TempData["Mensaje"] = "Solicitud eliminada correctamente.";
+            string error = acCotizaciones.Eliminar(id.Value, UsuarioNombre());
+
+            if (error != null)
+                TempData["Error"] = error;
+            else
+                TempData["Mensaje"] = "Solicitud eliminada correctamente.";
+
             return RedirectToAction("Index");
         }
 
-        // GET: /Cotizaciones/MisSolicitudes (cliente)
         public ActionResult MisSolicitudes()
         {
             if (!SesionActiva())
@@ -71,7 +77,6 @@ namespace MegaHits506.Controllers
             return View(lista);
         }
 
-        // GET: /Cotizaciones/Solicitar (cliente)
         public ActionResult Solicitar()
         {
             if (!SesionActiva())
@@ -79,19 +84,31 @@ namespace MegaHits506.Controllers
                 TempData["MensajeLogin"] = "Necesitás iniciar sesión para solicitar una cotización.";
                 return RedirectToAction("Login", "Acceso");
             }
-
             return View();
         }
 
-        // POST: /Cotizaciones/Solicitar (cliente)
         [HttpPost]
         public ActionResult Solicitar(Cotizacion cotizacion)
         {
             if (!SesionActiva())
                 return RedirectToAction("Login", "Acceso");
 
+            // Validar que la fecha no sea pasada
+            if (cotizacion.FechaEventoDeseada < DateTime.Today)
+            {
+                ViewBag.Error = "La fecha del evento no puede ser en el pasado.";
+                return View(cotizacion);
+            }
+
             cotizacion.UsIdentificador = UsuarioId();
-            acCotizaciones.Insertar(cotizacion, UsuarioNombre());
+            string error = acCotizaciones.Insertar(cotizacion, UsuarioNombre());
+
+            if (error != null)
+            {
+                ViewBag.Error = error;
+                return View(cotizacion);
+            }
+
             TempData["Mensaje"] = "¡Solicitud enviada! Nos pondremos en contacto pronto.";
             return RedirectToAction("MisSolicitudes");
         }

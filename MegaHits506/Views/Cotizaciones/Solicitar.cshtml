@@ -6,6 +6,12 @@
 <section style="padding:60px 0;background:var(--bg-secondary)">
     <div class="container" style="max-width:650px">
         <div class="card-mega">
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert-mega error mb-3">@ViewBag.Error</div>
+            }
+
             <div class="card-head">📋 Solicitar Cotización</div>
             <div class="card-body-mega">
                 <p style="color:var(--text-secondary);margin-bottom:24px">

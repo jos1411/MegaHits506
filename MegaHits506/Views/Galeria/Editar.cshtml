@@ -7,9 +7,18 @@
 <div class="card-mega" style="max-width:650px; margin:0 auto">
     <div class="card-head">✏️ Editar Galería</div>
     <div class="card-body-mega">
-        @using (Html.BeginForm("Editar", "Galeria", FormMethod.Post))
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert-mega error mb-3">@ViewBag.Error</div>
+        }
+
+        @using (Html.BeginForm("Editar", "Galeria", FormMethod.Post,
+                new { enctype = "multipart/form-data" }))
         {
             <input type="hidden" name="Identificador" value="@Model.Identificador" />
+            <input type="hidden" name="Url" id="urlFinal" value="@Model.Url" />
+
             <div class="form-mega">
                 <div class="mb-3">
                     <label>Evento *</label>
@@ -23,21 +32,66 @@
                         }
                     </select>
                 </div>
+
                 <div class="mb-3">
                     <label>Tipo *</label>
-                    <select name="Tipo" required>
+                    <select name="Tipo" id="selectTipo" required
+                            onchange="mostrarCampos(this.value)">
                         <option value="FOTO" @(Model.Tipo == "FOTO" ? "selected" : "")>📷 FOTO</option>
                         <option value="VIDEO" @(Model.Tipo == "VIDEO" ? "selected" : "")>🎬 VIDEO</option>
                     </select>
                 </div>
-                <div class="mb-3">
-                    <label>URL *</label>
-                    <input type="text" name="Url" value="@Model.Url" required />
+
+                <!-- FOTO -->
+                <div id="campoFoto"
+                     style="display:@(Model.Tipo == "FOTO" ? "block" : "none")">
+                    <div class="mb-3">
+                        <label>Subir nueva foto (opcional)</label>
+                        <input type="file" name="archivoFoto" accept="image/*"
+                               style="background:var(--bg-secondary);border:1px solid var(--border-color);
+                                      color:var(--text-primary);border-radius:var(--radius);
+                                      padding:8px;width:100%"
+                               onchange="previewImagen(this)" />
+                    </div>
+                    <div class="mb-3">
+                        <label>URL actual / nueva URL</label>
+                        <input type="text" id="urlFoto"
+                               value="@(Model.Tipo == "FOTO" ? Model.Url : "")"
+                               placeholder="https://..."
+                               oninput="document.getElementById('urlFinal').value = this.value" />
+                        @if (Model.Tipo == "FOTO" && !string.IsNullOrEmpty(Model.Url))
+                        {
+                            <img src="@Model.Url" alt="Foto actual"
+                                 style="max-width:100%;border-radius:var(--radius);
+                                        margin-top:8px;max-height:150px;object-fit:cover"
+                                 onerror="this.style.display='none'" />
+                        }
+                        <small style="color:var(--text-secondary)">
+                            Si subís un archivo nuevo, reemplaza la foto actual.
+                        </small>
+                    </div>
                 </div>
+
+                <!-- VIDEO -->
+                <div id="campoVideo"
+                     style="display:@(Model.Tipo == "VIDEO" ? "block" : "none")">
+                    <div class="mb-3">
+                        <label>URL de YouTube *</label>
+                        <input type="text" id="urlVideo"
+                               value="@(Model.Tipo == "VIDEO" ? Model.Url : "")"
+                               placeholder="https://www.youtube.com/watch?v=..."
+                               oninput="document.getElementById('urlFinal').value = this.value" />
+                        <small style="color:var(--text-secondary)">
+                            Pegá el enlace normal de YouTube.
+                        </small>
+                    </div>
+                </div>
+
                 <div class="mb-3">
                     <label>Descripción</label>
                     <textarea name="Descripcion" rows="2">@Model.Descripcion</textarea>
                 </div>
+
                 <div class="d-flex gap-2 mt-4">
                     <button type="submit" class="btn-blue">Guardar cambios</button>
                     <a href="/Galeria" class="btn-outline">Cancelar</a>
@@ -46,3 +100,24 @@
         }
     </div>
 </div>
+
+<script>
+    function mostrarCampos(tipo) {
+        document.getElementById('campoFoto').style.display = tipo === 'FOTO' ? 'block' : 'none';
+        document.getElementById('campoVideo').style.display = tipo === 'VIDEO' ? 'block' : 'none';
+        document.getElementById('urlFinal').value = '';
+    }
+
+    function previewImagen(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var img = document.createElement('img');
+                img.src = e.target.result;
+                img.style = 'max-width:100%;border-radius:10px;margin-top:8px;max-height:150px;object-fit:cover';
+                input.parentNode.appendChild(img);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>

@@ -19,19 +19,24 @@
             <div class="collapse navbar-collapse" id="navAdmin">
                 <ul class="navbar-nav ms-auto align-items-lg-center">
                     <li class="nav-item">
-                        <a class="nav-link" href="/Eventos">Eventos</a>
+                        <a class="nav-link @(Request.Url.AbsolutePath.StartsWith("/Eventos") ? "active" : "")"
+                           href="/Eventos">Eventos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Galeria">Galería</a>
+                        <a class="nav-link @(Request.Url.AbsolutePath.StartsWith("/Galeria") ? "active" : "")"
+                           href="/Galeria">Galería</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Usuarios">Usuarios</a>
+                        <a class="nav-link @(Request.Url.AbsolutePath.StartsWith("/Usuarios") ? "active" : "")"
+                           href="/Usuarios">Usuarios</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Cotizaciones">Cotizaciones</a>
+                        <a class="nav-link @(Request.Url.AbsolutePath.StartsWith("/Cotizaciones") ? "active" : "")"
+                           href="/Cotizaciones">Cotizaciones</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Home/About">Ayuda</a>
+                        <a class="nav-link @(Request.Url.AbsolutePath.StartsWith("/Home/About") ? "active" : "")"
+                           href="/Home/About">Ayuda</a>
                     </li>
                     <li class="nav-item ms-2">
                         <a class="nav-link" href="/Home/Index">Ver sitio</a>

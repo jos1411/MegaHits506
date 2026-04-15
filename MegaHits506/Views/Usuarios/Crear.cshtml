@@ -6,6 +6,12 @@
 <div class="card-mega" style="max-width:600px; margin:0 auto">
     <div class="card-head">👤 Nuevo Usuario</div>
     <div class="card-body-mega">
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert-mega error mb-3">@ViewBag.Error</div>
+        }
+
         @using (Html.BeginForm("Crear", "Usuarios", FormMethod.Post))
         {
             <div class="form-mega">

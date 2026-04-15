@@ -12,7 +12,6 @@ namespace MegaHits506.Controllers
     {
         private ACUsuarios acUsuarios = new ACUsuarios();
 
-        // GET: /Usuarios/
         public ActionResult Index()
         {
             if (!SesionActiva() || !EsAdmin())
@@ -22,7 +21,6 @@ namespace MegaHits506.Controllers
             return View(lista);
         }
 
-        // GET: /Usuarios/Crear
         public ActionResult Crear()
         {
             if (!SesionActiva() || !EsAdmin())
@@ -32,19 +30,25 @@ namespace MegaHits506.Controllers
             return View();
         }
 
-        // POST: /Usuarios/Crear
         [HttpPost]
         public ActionResult Crear(Usuario usuario)
         {
             if (!SesionActiva() || !EsAdmin())
                 return RedirectToAction("Login", "Acceso");
 
-            acUsuarios.Insertar(usuario, UsuarioNombre());
+            string error = acUsuarios.Insertar(usuario, UsuarioNombre());
+
+            if (error != null)
+            {
+                ViewBag.Error = error;
+                CargarRoles();
+                return View(usuario);
+            }
+
             TempData["Mensaje"] = "Usuario registrado correctamente.";
             return RedirectToAction("Index");
         }
 
-        // GET: /Usuarios/Editar/5
         public ActionResult Editar(int? id)
         {
             if (!SesionActiva() || !EsAdmin())
@@ -62,19 +66,25 @@ namespace MegaHits506.Controllers
             return View(usuario);
         }
 
-        // POST: /Usuarios/Editar
         [HttpPost]
         public ActionResult Editar(Usuario usuario)
         {
             if (!SesionActiva() || !EsAdmin())
                 return RedirectToAction("Login", "Acceso");
 
-            acUsuarios.Actualizar(usuario, UsuarioNombre());
+            string error = acUsuarios.Actualizar(usuario, UsuarioNombre());
+
+            if (error != null)
+            {
+                ViewBag.Error = error;
+                CargarRoles();
+                return View(usuario);
+            }
+
             TempData["Mensaje"] = "Usuario actualizado correctamente.";
             return RedirectToAction("Index");
         }
 
-        // GET: /Usuarios/Eliminar/5
         public ActionResult Eliminar(int? id)
         {
             if (!SesionActiva() || !EsAdmin())
@@ -89,12 +99,16 @@ namespace MegaHits506.Controllers
                 return RedirectToAction("Index");
             }
 
-            acUsuarios.Eliminar(id.Value, UsuarioNombre());
-            TempData["Mensaje"] = "Usuario inactivado correctamente.";
+            string error = acUsuarios.Eliminar(id.Value, UsuarioNombre());
+
+            if (error != null)
+                TempData["Error"] = error;
+            else
+                TempData["Mensaje"] = "Usuario inactivado correctamente.";
+
             return RedirectToAction("Index");
         }
 
-        // Carga roles para los dropdowns
         private void CargarRoles()
         {
             using (SqlConnection con = new SqlConnection(

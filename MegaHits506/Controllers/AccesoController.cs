@@ -8,7 +8,6 @@ namespace MegaHits506.Controllers
     {
         private ACUsuarios acUsuarios = new ACUsuarios();
 
-        // GET: /Acceso/Login
         public ActionResult Login()
         {
             if (SesionActiva())
@@ -21,29 +20,41 @@ namespace MegaHits506.Controllers
             return View();
         }
 
-        // POST: /Acceso/Login
         [HttpPost]
         public ActionResult Login(string correo, string clave)
         {
-            Usuario usuario = acUsuarios.Login(correo, clave);
-
-            if (usuario != null)
+            if (string.IsNullOrWhiteSpace(correo) || string.IsNullOrWhiteSpace(clave))
             {
-                Session["UsuarioId"] = usuario.Identificador;
-                Session["UsuarioNombre"] = usuario.NombreCompleto;
-                Session["UsuarioRol"] = usuario.Rol;
-
-                if (usuario.Rol == "Administrador")
-                    return RedirectToAction("Index", "Eventos");
-                else
-                    return RedirectToAction("Index", "Home");
+                ViewBag.Error = "Correo y contraseña son requeridos.";
+                return View();
             }
 
-            ViewBag.Error = "Correo o contraseña incorrectos.";
-            return View();
+            try
+            {
+                Usuario usuario = acUsuarios.Login(correo, clave);
+
+                if (usuario != null)
+                {
+                    Session["UsuarioId"] = usuario.Identificador;
+                    Session["UsuarioNombre"] = usuario.NombreCompleto;
+                    Session["UsuarioRol"] = usuario.Rol;
+
+                    if (usuario.Rol == "Administrador")
+                        return RedirectToAction("Index", "Eventos");
+                    else
+                        return RedirectToAction("Index", "Home");
+                }
+
+                ViewBag.Error = "Correo o contraseña incorrectos.";
+                return View();
+            }
+            catch
+            {
+                ViewBag.Error = "Error al conectar con el servidor. Intentá de nuevo.";
+                return View();
+            }
         }
 
-        // GET: /Acceso/Registro
         public ActionResult Registro()
         {
             if (SesionActiva())
@@ -52,32 +63,46 @@ namespace MegaHits506.Controllers
             return View();
         }
 
-        // POST: /Acceso/Registro
         [HttpPost]
         public ActionResult Registro(Usuario usuario)
         {
             if (SesionActiva())
                 return RedirectToAction("Index", "Home");
 
-            // Rol 2 = Cliente, siempre automático
-            usuario.RoIdentificador = 2;
-            acUsuarios.Insertar(usuario, usuario.Correo);
-
-            // Después de registrarse iniciamos sesión automáticamente
-            Usuario registrado = acUsuarios.Login(usuario.Correo, usuario.Clave);
-
-            if (registrado != null)
+            if (string.IsNullOrWhiteSpace(usuario.NombreCompleto) ||
+                string.IsNullOrWhiteSpace(usuario.Correo) ||
+                string.IsNullOrWhiteSpace(usuario.Clave))
             {
-                Session["UsuarioId"] = registrado.Identificador;
-                Session["UsuarioNombre"] = registrado.NombreCompleto;
-                Session["UsuarioRol"] = registrado.Rol;
+                ViewBag.Error = "Nombre, correo y contraseña son requeridos.";
+                return View(usuario);
             }
+
+            usuario.RoIdentificador = 2;
+            string error = acUsuarios.Insertar(usuario, usuario.Correo);
+
+            if (error != null)
+            {
+                ViewBag.Error = error;
+                return View(usuario);
+            }
+
+            try
+            {
+                Usuario registrado = acUsuarios.Login(usuario.Correo, usuario.Clave);
+
+                if (registrado != null)
+                {
+                    Session["UsuarioId"] = registrado.Identificador;
+                    Session["UsuarioNombre"] = registrado.NombreCompleto;
+                    Session["UsuarioRol"] = registrado.Rol;
+                }
+            }
+            catch { }
 
             TempData["Mensaje"] = "¡Registro exitoso! Bienvenido a Mega Hits 506.";
             return RedirectToAction("Index", "Home");
         }
 
-        // GET: /Acceso/CerrarSesion
         public ActionResult CerrarSesion()
         {
             Session.Clear();

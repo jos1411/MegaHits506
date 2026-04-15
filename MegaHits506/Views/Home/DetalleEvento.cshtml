@@ -6,6 +6,8 @@
     Layout = "~/Views/Shared/_LayoutPublico.cshtml";
     var galeria = ViewBag.Galeria as List<MegaHits506.Models.Galeria>
                   ?? new List<MegaHits506.Models.Galeria>();
+    var fotos = galeria.Where(x => x.Tipo == "FOTO").ToList();
+    var videos = galeria.Where(x => x.Tipo == "VIDEO").ToList();
 }
 
 <div style="padding:60px 0;background:var(--bg-primary)">
@@ -28,8 +30,7 @@
                         <p>
                             <strong>
                                 @(Model.FechaEvento.HasValue ?
-                                Model.FechaEvento.Value.ToString("dd/MM/yyyy") :
-                                "Por confirmar")
+                                Model.FechaEvento.Value.ToString("dd/MM/yyyy") : "Por confirmar")
                             </strong>
                         </p>
                     </div>
@@ -44,19 +45,13 @@
                 </div>
                 <div class="d-flex gap-2">
                     <a href="/Home/Eventos" class="btn-outline">← Volver</a>
-                    <a href="/Cotizaciones/Solicitar" class="btn-blue">
-                        📋 Solicitar Cotización
-                    </a>
+                    <a href="/Cotizaciones/Solicitar" class="btn-blue">📋 Solicitar Cotización</a>
                 </div>
             </div>
         </div>
 
-        @* GALERÍA DEL EVENTO *@
         @if (galeria.Any())
         {
-            var fotos = galeria.Where(x => x.Tipo == "FOTO").ToList();
-            var videos = galeria.Where(x => x.Tipo == "VIDEO").ToList();
-
             <div class="card-mega">
                 <div class="card-head">📸 Galería del Evento</div>
                 <div class="card-body-mega">
@@ -68,14 +63,16 @@
                             @foreach (var foto in fotos)
                             {
                                 <div class="col-md-4">
-                                    <img src="@foto.Url" alt="@foto.Descripcion"
-                                         style="width:100%;height:180px;object-fit:cover;
-                                                border-radius:var(--radius)"
-                                         onerror="this.style.display='none'" />
+                                    <a href="@foto.Url" data-lightbox="evento"
+                                       data-title="@foto.Descripcion">
+                                        <img src="@foto.Url" alt="@foto.Descripcion"
+                                             style="width:100%;height:180px;object-fit:cover;
+                                                    border-radius:var(--radius);cursor:pointer"
+                                             onerror="this.style.display='none'" />
+                                    </a>
                                     @if (!string.IsNullOrEmpty(foto.Descripcion))
                                     {
-                                        <p style="color:var(--text-secondary);
-                                                  font-size:13px;margin-top:6px">
+                                        <p style="color:var(--text-secondary);font-size:13px;margin-top:6px">
                                             @foto.Descripcion
                                         </p>
                                     }
@@ -97,8 +94,7 @@
                                             allowfullscreen></iframe>
                                     @if (!string.IsNullOrEmpty(video.Descripcion))
                                     {
-                                        <p style="color:var(--text-secondary);
-                                                  font-size:13px;margin-top:6px">
+                                        <p style="color:var(--text-secondary);font-size:13px;margin-top:6px">
                                             @video.Descripcion
                                         </p>
                                     }

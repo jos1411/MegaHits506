@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = "Galería";
     Layout = "~/Views/Shared/_LayoutPublico.cshtml";
+    var fotos = Model.Where(x => x.Tipo == "FOTO").ToList();
+    var videos = Model.Where(x => x.Tipo == "VIDEO").ToList();
 }
 
 <div style="background:linear-gradient(135deg,#1a1a2a 0%,var(--color-blue) 100%);
@@ -13,10 +15,6 @@
 
 <section style="padding:60px 0;background:var(--bg-primary)">
     <div class="container">
-        @{
-            var fotos = Model.Where(x => x.Tipo == "FOTO").ToList();
-            var videos = Model.Where(x => x.Tipo == "VIDEO").ToList();
-        }
 
         @if (!fotos.Any() && !videos.Any())
         {
@@ -36,9 +34,22 @@
                 {
                     <div class="col-md-4">
                         <div class="card-mega">
-                            <img src="@item.Url" alt="@item.Descripcion"
-                                 style="width:100%;height:220px;object-fit:cover"
-                                 onerror="this.src='https://via.placeholder.com/400x220?text=Foto'" />
+                            @if (!string.IsNullOrEmpty(item.Url))
+                            {
+                                <a href="@item.Url" data-lightbox="galeria"
+                                   data-title="@item.Descripcion">
+                                    <img src="@item.Url" alt="@item.Descripcion"
+                                         style="width:100%;height:220px;object-fit:cover;cursor:pointer"
+                                         onerror="this.parentElement.innerHTML='<div style=\'width:100%;height:220px;background:var(--bg-secondary);display:flex;align-items:center;justify-content:center;font-size:40px\'>📷</div>'" />
+                                </a>
+                            }
+                            else
+                            {
+                                <div style="width:100%;height:220px;background:var(--bg-secondary);
+                                            display:flex;align-items:center;justify-content:center;font-size:40px">
+                                    📷
+                                </div>
+                            }
                             <div class="card-body-mega" style="padding:14px">
                                 <small style="color:var(--color-blue)">@item.Evento</small>
                                 <p style="color:var(--text-secondary);margin:4px 0 0;font-size:13px">
@@ -76,5 +87,6 @@
                 }
             </div>
         }
+
     </div>
 </section>

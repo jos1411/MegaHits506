@@ -12,69 +12,79 @@ namespace MegaHits506.AccesoDatos
         private readonly string _connectionString =
             ConfigurationManager.ConnectionStrings["MegaHitsDB"].ConnectionString;
 
-        // LISTAR TODAS (para el admin)
+        // LISTAR TODAS (admin)
         public List<Cotizacion> Listar()
         {
             List<Cotizacion> lista = new List<Cotizacion>();
-
-            using (SqlConnection con = new SqlConnection(_connectionString))
+            try
             {
-                SqlCommand cmd = new SqlCommand("sp_list_cotizaciones", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                con.Open();
-                SqlDataReader dr = cmd.ExecuteReader();
-
-                while (dr.Read())
+                using (SqlConnection con = new SqlConnection(_connectionString))
                 {
-                    lista.Add(new Cotizacion
+                    SqlCommand cmd = new SqlCommand("sp_list_cotizaciones", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    con.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+
+                    while (dr.Read())
                     {
-                        Identificador = Convert.ToInt32(dr["ct_identificador"]),
-                        Cliente = dr["ct_cliente"].ToString(),
-                        Correo = dr["ct_correo"].ToString(),
-                        FechaEventoDeseada = Convert.ToDateTime(dr["ct_fecha_evento_deseada"]),
-                        TipoEvento = dr["ct_tipo_evento"].ToString(),
-                        Detalles = dr["ct_detalles"].ToString(),
-                        TelefonoCliente = dr["ct_telefono_cliente"].ToString(),
-                        EstadoSolicitud = dr["ct_estado_solicitud"].ToString(),
-                        Estado = dr["ct_estado"].ToString(),
-                        FechaAdicion = Convert.ToDateTime(dr["ct_fecha_adicion"])
-                    });
+                        lista.Add(new Cotizacion
+                        {
+                            Identificador = Convert.ToInt32(dr["ct_identificador"]),
+                            Cliente = dr["ct_cliente"].ToString(),
+                            Correo = dr["ct_correo"].ToString(),
+                            FechaEventoDeseada = Convert.ToDateTime(dr["ct_fecha_evento_deseada"]),
+                            TipoEvento = dr["ct_tipo_evento"].ToString(),
+                            Detalles = dr["ct_detalles"].ToString(),
+                            TelefonoCliente = dr["ct_telefono_cliente"].ToString(),
+                            EstadoSolicitud = dr["ct_estado_solicitud"].ToString(),
+                            Estado = dr["ct_estado"].ToString(),
+                            FechaAdicion = Convert.ToDateTime(dr["ct_fecha_adicion"])
+                        });
+                    }
                 }
             }
-
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar cotizaciones: " + ex.Message);
+            }
             return lista;
         }
 
-        // LISTAR POR USUARIO (para el cliente)
+        // LISTAR POR USUARIO (cliente)
         public List<Cotizacion> ListarPorUsuario(int usId)
         {
             List<Cotizacion> lista = new List<Cotizacion>();
-
-            using (SqlConnection con = new SqlConnection(_connectionString))
+            try
             {
-                SqlCommand cmd = new SqlCommand("sp_list_cotizaciones_por_usuario", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@UsIdentificador", usId);
-
-                con.Open();
-                SqlDataReader dr = cmd.ExecuteReader();
-
-                while (dr.Read())
+                using (SqlConnection con = new SqlConnection(_connectionString))
                 {
-                    lista.Add(new Cotizacion
+                    SqlCommand cmd = new SqlCommand("sp_list_cotizaciones_por_usuario", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UsIdentificador", usId);
+
+                    con.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+
+                    while (dr.Read())
                     {
-                        Identificador = Convert.ToInt32(dr["ct_identificador"]),
-                        FechaEventoDeseada = Convert.ToDateTime(dr["ct_fecha_evento_deseada"]),
-                        TipoEvento = dr["ct_tipo_evento"].ToString(),
-                        Detalles = dr["ct_detalles"].ToString(),
-                        TelefonoCliente = dr["ct_telefono_cliente"].ToString(),
-                        EstadoSolicitud = dr["ct_estado_solicitud"].ToString(),
-                        FechaAdicion = Convert.ToDateTime(dr["ct_fecha_adicion"])
-                    });
+                        lista.Add(new Cotizacion
+                        {
+                            Identificador = Convert.ToInt32(dr["ct_identificador"]),
+                            FechaEventoDeseada = Convert.ToDateTime(dr["ct_fecha_evento_deseada"]),
+                            TipoEvento = dr["ct_tipo_evento"].ToString(),
+                            Detalles = dr["ct_detalles"].ToString(),
+                            TelefonoCliente = dr["ct_telefono_cliente"].ToString(),
+                            EstadoSolicitud = dr["ct_estado_solicitud"].ToString(),
+                            FechaAdicion = Convert.ToDateTime(dr["ct_fecha_adicion"])
+                        });
+                    }
                 }
             }
-
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar solicitudes: " + ex.Message);
+            }
             return lista;
         }
 
@@ -82,84 +92,113 @@ namespace MegaHits506.AccesoDatos
         public Cotizacion Obtener(int id)
         {
             Cotizacion cotizacion = null;
-
-            using (SqlConnection con = new SqlConnection(_connectionString))
+            try
             {
-                SqlCommand cmd = new SqlCommand("sp_get_cotizaciones", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@Identificador", id);
-
-                con.Open();
-                SqlDataReader dr = cmd.ExecuteReader();
-
-                if (dr.Read())
+                using (SqlConnection con = new SqlConnection(_connectionString))
                 {
-                    cotizacion = new Cotizacion
+                    SqlCommand cmd = new SqlCommand("sp_get_cotizaciones", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Identificador", id);
+
+                    con.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+
+                    if (dr.Read())
                     {
-                        Identificador = Convert.ToInt32(dr["ct_identificador"]),
-                        UsIdentificador = Convert.ToInt32(dr["ct_us_identificador"]),
-                        Cliente = dr["ct_cliente"].ToString(),
-                        Correo = dr["ct_correo"].ToString(),
-                        FechaEventoDeseada = Convert.ToDateTime(dr["ct_fecha_evento_deseada"]),
-                        TipoEvento = dr["ct_tipo_evento"].ToString(),
-                        Detalles = dr["ct_detalles"].ToString(),
-                        TelefonoCliente = dr["ct_telefono_cliente"].ToString(),
-                        EstadoSolicitud = dr["ct_estado_solicitud"].ToString(),
-                        Estado = dr["ct_estado"].ToString()
-                    };
+                        cotizacion = new Cotizacion
+                        {
+                            Identificador = Convert.ToInt32(dr["ct_identificador"]),
+                            UsIdentificador = Convert.ToInt32(dr["ct_us_identificador"]),
+                            Cliente = dr["ct_cliente"].ToString(),
+                            Correo = dr["ct_correo"].ToString(),
+                            FechaEventoDeseada = Convert.ToDateTime(dr["ct_fecha_evento_deseada"]),
+                            TipoEvento = dr["ct_tipo_evento"].ToString(),
+                            Detalles = dr["ct_detalles"].ToString(),
+                            TelefonoCliente = dr["ct_telefono_cliente"].ToString(),
+                            EstadoSolicitud = dr["ct_estado_solicitud"].ToString(),
+                            Estado = dr["ct_estado"].ToString()
+                        };
+                    }
                 }
             }
-
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener cotización: " + ex.Message);
+            }
             return cotizacion;
         }
 
-        // INSERTAR (el cliente envía la solicitud)
-        public void Insertar(Cotizacion c, string adicionadoPor)
+        // INSERTAR
+        public string Insertar(Cotizacion c, string adicionadoPor)
         {
-            using (SqlConnection con = new SqlConnection(_connectionString))
+            try
             {
-                SqlCommand cmd = new SqlCommand("sp_insert_cotizaciones", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@UsIdentificador", c.UsIdentificador);
-                cmd.Parameters.AddWithValue("@FechaEventoDeseada", c.FechaEventoDeseada);
-                cmd.Parameters.AddWithValue("@TipoEvento", c.TipoEvento ?? "");
-                cmd.Parameters.AddWithValue("@Detalles", c.Detalles ?? "");
-                cmd.Parameters.AddWithValue("@TelefonoCliente", c.TelefonoCliente ?? "");
-                cmd.Parameters.AddWithValue("@AdicionadoPor", adicionadoPor);
+                using (SqlConnection con = new SqlConnection(_connectionString))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_insert_cotizaciones", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UsIdentificador", c.UsIdentificador);
+                    cmd.Parameters.AddWithValue("@FechaEventoDeseada", c.FechaEventoDeseada);
+                    cmd.Parameters.AddWithValue("@TipoEvento", c.TipoEvento ?? "");
+                    cmd.Parameters.AddWithValue("@Detalles", c.Detalles ?? "");
+                    cmd.Parameters.AddWithValue("@TelefonoCliente", c.TelefonoCliente ?? "");
+                    cmd.Parameters.AddWithValue("@AdicionadoPor", adicionadoPor);
 
-                con.Open();
-                cmd.ExecuteNonQuery();
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                return "Error al enviar solicitud: " + ex.Message;
             }
         }
 
-        // CAMBIAR ESTADO (el admin atiende o cancela)
-        public void CambiarEstado(int id, string estado, string modificadoPor)
+        // CAMBIAR ESTADO
+        public string CambiarEstado(int id, string estado, string modificadoPor)
         {
-            using (SqlConnection con = new SqlConnection(_connectionString))
+            try
             {
-                SqlCommand cmd = new SqlCommand("sp_update_estado_cotizaciones", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@Identificador", id);
-                cmd.Parameters.AddWithValue("@EstadoSolicitud", estado);
-                cmd.Parameters.AddWithValue("@ModificadoPor", modificadoPor);
+                using (SqlConnection con = new SqlConnection(_connectionString))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_update_estado_cotizaciones", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Identificador", id);
+                    cmd.Parameters.AddWithValue("@EstadoSolicitud", estado);
+                    cmd.Parameters.AddWithValue("@ModificadoPor", modificadoPor);
 
-                con.Open();
-                cmd.ExecuteNonQuery();
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                return "Error al cambiar estado: " + ex.Message;
             }
         }
 
-        // ELIMINAR (inactiva)
-        public void Eliminar(int id, string modificadoPor)
+        // ELIMINAR
+        public string Eliminar(int id, string modificadoPor)
         {
-            using (SqlConnection con = new SqlConnection(_connectionString))
+            try
             {
-                SqlCommand cmd = new SqlCommand("sp_delete_cotizaciones", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@Identificador", id);
-                cmd.Parameters.AddWithValue("@ModificadoPor", modificadoPor);
+                using (SqlConnection con = new SqlConnection(_connectionString))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_delete_cotizaciones", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Identificador", id);
+                    cmd.Parameters.AddWithValue("@ModificadoPor", modificadoPor);
 
-                con.Open();
-                cmd.ExecuteNonQuery();
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                return "Error al eliminar solicitud: " + ex.Message;
             }
         }
     }

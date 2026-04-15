@@ -16,31 +16,36 @@ namespace MegaHits506.AccesoDatos
         public Usuario Login(string correo, string clave)
         {
             Usuario usuario = null;
-
-            using (SqlConnection con = new SqlConnection(_connectionString))
+            try
             {
-                SqlCommand cmd = new SqlCommand("sp_login_usuarios", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@Correo", correo);
-                cmd.Parameters.AddWithValue("@Clave", clave);
-
-                con.Open();
-                SqlDataReader dr = cmd.ExecuteReader();
-
-                if (dr.Read())
+                using (SqlConnection con = new SqlConnection(_connectionString))
                 {
-                    usuario = new Usuario
+                    SqlCommand cmd = new SqlCommand("sp_login_usuarios", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Correo", correo);
+                    cmd.Parameters.AddWithValue("@Clave", clave);
+
+                    con.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+
+                    if (dr.Read())
                     {
-                        Identificador = Convert.ToInt32(dr["us_identificador"]),
-                        NombreCompleto = dr["us_nombre_completo"].ToString(),
-                        Correo = dr["us_correo"].ToString(),
-                        Estado = dr["us_estado"].ToString(),
-                        RoIdentificador = Convert.ToInt32(dr["us_ro_identificador"]),
-                        Rol = dr["us_rol"].ToString()
-                    };
+                        usuario = new Usuario
+                        {
+                            Identificador = Convert.ToInt32(dr["us_identificador"]),
+                            NombreCompleto = dr["us_nombre_completo"].ToString(),
+                            Correo = dr["us_correo"].ToString(),
+                            Estado = dr["us_estado"].ToString(),
+                            RoIdentificador = Convert.ToInt32(dr["us_ro_identificador"]),
+                            Rol = dr["us_rol"].ToString()
+                        };
+                    }
                 }
             }
-
+            catch (Exception ex)
+            {
+                throw new Exception("Error al iniciar sesión: " + ex.Message);
+            }
             return usuario;
         }
 
@@ -48,29 +53,34 @@ namespace MegaHits506.AccesoDatos
         public List<Usuario> Listar()
         {
             List<Usuario> lista = new List<Usuario>();
-
-            using (SqlConnection con = new SqlConnection(_connectionString))
+            try
             {
-                SqlCommand cmd = new SqlCommand("sp_list_usuarios", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                con.Open();
-                SqlDataReader dr = cmd.ExecuteReader();
-
-                while (dr.Read())
+                using (SqlConnection con = new SqlConnection(_connectionString))
                 {
-                    lista.Add(new Usuario
+                    SqlCommand cmd = new SqlCommand("sp_list_usuarios", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    con.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+
+                    while (dr.Read())
                     {
-                        Identificador = Convert.ToInt32(dr["us_identificador"]),
-                        Cedula = dr["us_cedula"].ToString(),
-                        Correo = dr["us_correo"].ToString(),
-                        NombreCompleto = dr["us_nombre_completo"].ToString(),
-                        Estado = dr["us_estado"].ToString(),
-                        Rol = dr["us_rol"].ToString()
-                    });
+                        lista.Add(new Usuario
+                        {
+                            Identificador = Convert.ToInt32(dr["us_identificador"]),
+                            Cedula = dr["us_cedula"].ToString(),
+                            Correo = dr["us_correo"].ToString(),
+                            NombreCompleto = dr["us_nombre_completo"].ToString(),
+                            Estado = dr["us_estado"].ToString(),
+                            Rol = dr["us_rol"].ToString()
+                        });
+                    }
                 }
             }
-
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar usuarios: " + ex.Message);
+            }
             return lista;
         }
 
@@ -78,84 +88,128 @@ namespace MegaHits506.AccesoDatos
         public Usuario Obtener(int id)
         {
             Usuario usuario = null;
-
-            using (SqlConnection con = new SqlConnection(_connectionString))
+            try
             {
-                SqlCommand cmd = new SqlCommand("sp_get_usuarios", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@Identificador", id);
-
-                con.Open();
-                SqlDataReader dr = cmd.ExecuteReader();
-
-                if (dr.Read())
+                using (SqlConnection con = new SqlConnection(_connectionString))
                 {
-                    usuario = new Usuario
+                    SqlCommand cmd = new SqlCommand("sp_get_usuarios", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Identificador", id);
+
+                    con.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+
+                    if (dr.Read())
                     {
-                        Identificador = Convert.ToInt32(dr["us_identificador"]),
-                        Cedula = dr["us_cedula"].ToString(),
-                        Correo = dr["us_correo"].ToString(),
-                        NombreCompleto = dr["us_nombre_completo"].ToString(),
-                        Estado = dr["us_estado"].ToString(),
-                        RoIdentificador = Convert.ToInt32(dr["us_ro_identificador"]),
-                        Rol = dr["us_rol"].ToString()
-                    };
+                        usuario = new Usuario
+                        {
+                            Identificador = Convert.ToInt32(dr["us_identificador"]),
+                            Cedula = dr["us_cedula"].ToString(),
+                            Correo = dr["us_correo"].ToString(),
+                            NombreCompleto = dr["us_nombre_completo"].ToString(),
+                            Estado = dr["us_estado"].ToString(),
+                            RoIdentificador = Convert.ToInt32(dr["us_ro_identificador"]),
+                            Rol = dr["us_rol"].ToString()
+                        };
+                    }
                 }
             }
-
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener usuario: " + ex.Message);
+            }
             return usuario;
         }
 
-        // INSERTAR
-        public void Insertar(Usuario u, string adicionadoPor)
+        // INSERTAR — retorna string con error o null si fue exitoso
+        public string Insertar(Usuario u, string adicionadoPor)
         {
-            using (SqlConnection con = new SqlConnection(_connectionString))
+            try
             {
-                SqlCommand cmd = new SqlCommand("sp_insert_usuarios", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@Cedula", u.Cedula);
-                cmd.Parameters.AddWithValue("@Correo", u.Correo);
-                cmd.Parameters.AddWithValue("@Clave", u.Clave);
-                cmd.Parameters.AddWithValue("@NombreCompleto", u.NombreCompleto);
-                cmd.Parameters.AddWithValue("@RoIdentificador", u.RoIdentificador);
-                cmd.Parameters.AddWithValue("@AdicionadoPor", adicionadoPor);
+                using (SqlConnection con = new SqlConnection(_connectionString))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_insert_usuarios", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Cedula", u.Cedula ?? "");
+                    cmd.Parameters.AddWithValue("@Correo", u.Correo);
+                    cmd.Parameters.AddWithValue("@Clave", u.Clave);
+                    cmd.Parameters.AddWithValue("@NombreCompleto", u.NombreCompleto);
+                    cmd.Parameters.AddWithValue("@RoIdentificador", u.RoIdentificador);
+                    cmd.Parameters.AddWithValue("@AdicionadoPor", adicionadoPor);
 
-                con.Open();
-                cmd.ExecuteNonQuery();
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                return null; // null = éxito
+            }
+            catch (SqlException ex)
+            {
+                // Error 2627 = violación de UNIQUE (correo duplicado)
+                if (ex.Number == 2627)
+                    return "El correo electrónico ya está registrado.";
+
+                return "Error al registrar usuario: " + ex.Message;
+            }
+            catch (Exception ex)
+            {
+                return "Error inesperado: " + ex.Message;
             }
         }
 
-        // ACTUALIZAR
-        public void Actualizar(Usuario u, string modificadoPor)
+        // ACTUALIZAR — retorna string con error o null si fue exitoso
+        public string Actualizar(Usuario u, string modificadoPor)
         {
-            using (SqlConnection con = new SqlConnection(_connectionString))
+            try
             {
-                SqlCommand cmd = new SqlCommand("sp_update_usuarios", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@Identificador", u.Identificador);
-                cmd.Parameters.AddWithValue("@Cedula", u.Cedula);
-                cmd.Parameters.AddWithValue("@Correo", u.Correo);
-                cmd.Parameters.AddWithValue("@NombreCompleto", u.NombreCompleto);
-                cmd.Parameters.AddWithValue("@RoIdentificador", u.RoIdentificador);
-                cmd.Parameters.AddWithValue("@ModificadoPor", modificadoPor);
+                using (SqlConnection con = new SqlConnection(_connectionString))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_update_usuarios", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Identificador", u.Identificador);
+                    cmd.Parameters.AddWithValue("@Cedula", u.Cedula ?? "");
+                    cmd.Parameters.AddWithValue("@Correo", u.Correo);
+                    cmd.Parameters.AddWithValue("@NombreCompleto", u.NombreCompleto);
+                    cmd.Parameters.AddWithValue("@RoIdentificador", u.RoIdentificador);
+                    cmd.Parameters.AddWithValue("@ModificadoPor", modificadoPor);
 
-                con.Open();
-                cmd.ExecuteNonQuery();
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                return null;
+            }
+            catch (SqlException ex)
+            {
+                if (ex.Number == 2627)
+                    return "El correo electrónico ya está en uso por otro usuario.";
+
+                return "Error al actualizar usuario: " + ex.Message;
+            }
+            catch (Exception ex)
+            {
+                return "Error inesperado: " + ex.Message;
             }
         }
 
-        // ELIMINAR (inactiva)
-        public void Eliminar(int id, string modificadoPor)
+        // ELIMINAR
+        public string Eliminar(int id, string modificadoPor)
         {
-            using (SqlConnection con = new SqlConnection(_connectionString))
+            try
             {
-                SqlCommand cmd = new SqlCommand("sp_delete_usuarios", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@Identificador", id);
-                cmd.Parameters.AddWithValue("@ModificadoPor", modificadoPor);
+                using (SqlConnection con = new SqlConnection(_connectionString))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_delete_usuarios", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Identificador", id);
+                    cmd.Parameters.AddWithValue("@ModificadoPor", modificadoPor);
 
-                con.Open();
-                cmd.ExecuteNonQuery();
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                return "Error al inactivar usuario: " + ex.Message;
             }
         }
     }
