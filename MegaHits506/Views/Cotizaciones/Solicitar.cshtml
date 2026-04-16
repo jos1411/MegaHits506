@@ -1,70 +1,67 @@
-﻿@model List<MegaHits506.Models.Cotizacion>
-@{
-    ViewBag.Title = "Cotizaciones";
-    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+﻿@{
+    ViewBag.Title = "Solicitar Cotización";
+    Layout = "~/Views/Shared/_LayoutPublico.cshtml";
 }
 
-@if (TempData["Mensaje"] != null)
-{
-    <div class="alert-mega success mb-4">@TempData["Mensaje"]</div>
-}
-@if (TempData["Error"] != null)
-{
-    <div class="alert-mega error mb-4">@TempData["Error"]</div>
-}
+<section style="padding:60px 0;background:var(--bg-secondary)">
+    <div class="container" style="max-width:650px">
 
-<div class="card-mega">
-    <div class="card-head">📋 Solicitudes de Cotización</div>
-    <div class="card-body-mega">
-        <div class="tabla-admin-wrapper">
-            <table class="table-mega">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Cliente</th>
-                        <th>Teléfono</th>
-                        <th>Tipo de evento</th>
-                        <th>Fecha deseada</th>
-                        <th>Recibida</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td data-label="#">@item.Identificador</td>
-                            <td data-label="Cliente">@item.Cliente</td>
-                            <td data-label="Teléfono">@item.TelefonoCliente</td>
-                            <td data-label="Tipo">@item.TipoEvento</td>
-                            <td data-label="Fecha deseada">@item.FechaEventoDeseada.ToString("dd/MM/yyyy")</td>
-                            <td data-label="Recibida">@item.FechaAdicion.ToString("dd/MM/yyyy")</td>
-                            <td data-label="Estado">
-                                @if (item.EstadoSolicitud == "PENDIENTE")
-                                {
-                                    <span class="badge-pendiente">PENDIENTE</span>
-                                }
-                                else if (item.EstadoSolicitud == "ATENDIDO")
-                                {
-                                    <span class="badge-atendido">ATENDIDO</span>
-                                }
-                                else
-                                {
-                                    <span class="badge-cancelado">CANCELADO</span>
-                                }
-                            </td>
-                            <td data-label="Acciones">
-                                <div class="acciones-mobile">
-                                    <a href="/Cotizaciones/Detalle/@item.Identificador" class="btn-blue">Ver</a>
-                                    <a href="/Cotizaciones/Eliminar/@item.Identificador" class="btn-red"
-                                       onclick="return confirm('¿Desea eliminar esta solicitud?')">Eliminar</a>
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert-mega error mb-4">@ViewBag.Error</div>
+        }
+
+        <div class="card-mega">
+            <div class="card-head">📋 Solicitar Cotización</div>
+            <div class="card-body-mega">
+                <p style="color:var(--text-secondary);margin-bottom:24px">
+                    Completá el formulario y nos pondremos en contacto
+                    para coordinar tu evento.
+                </p>
+
+                @using (Html.BeginForm("Solicitar", "Cotizaciones", FormMethod.Post))
+                {
+                    <div class="form-mega">
+                        <div class="mb-3">
+                            <label>Tipo de evento *</label>
+                            <select name="TipoEvento" required>
+                                <option value="">-- Seleccione --</option>
+                                <option value="Boda">💍 Boda</option>
+                                <option value="Quinceañera">🎀 Quinceañera</option>
+                                <option value="Cabalgata">🐴 Cabalgata</option>
+                                <option value="Actividad religiosa">⛪ Actividad religiosa</option>
+                                <option value="Fiesta privada">🎉 Fiesta privada</option>
+                                <option value="Evento corporativo">🏢 Evento corporativo</option>
+                                <option value="Otro">📌 Otro</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label>Fecha deseada del evento *</label>
+                            <input type="date" name="FechaEventoDeseada" required />
+                        </div>
+                        <div class="mb-3">
+                            <label>Teléfono de contacto *</label>
+                            <input type="text" name="TelefonoCliente"
+                                   placeholder="Ej: 8888-8888" required />
+                        </div>
+                        <div class="mb-3">
+                            <label>Detalles adicionales</label>
+                            <textarea name="Detalles" rows="4"
+                                      placeholder="Contanos más: lugar, cantidad de personas, tipo de música..."></textarea>
+                        </div>
+                        <div class="d-flex gap-2 mt-4">
+                            <button type="submit" class="btn-blue"
+                                    style="padding:12px 32px">
+                                Enviar solicitud
+                            </button>
+                            <a href="/Home/Index" class="btn-outline"
+                               style="padding:12px 32px">
+                                Cancelar
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
     </div>
-</div>
+</section>

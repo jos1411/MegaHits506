@@ -179,14 +179,18 @@ body {
 
 /* =========================================
    CARDS
+   FIX: overflow visible para que las tablas
+   no corten contenido en mobile ni en desktop
+   El border-radius del header se maneja
+   directamente en .card-head
    ========================================= */
 .card-mega {
     background-color: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    overflow: hidden;
     transition: transform var(--transition), box-shadow var(--transition);
+    /* overflow: hidden ELIMINADO — causaba corte en tablas mobile */
 }
 
     .card-mega:hover {
@@ -200,6 +204,8 @@ body {
         padding: 16px 20px;
         font-size: 16px;
         font-weight: 600;
+        /* Border radius explícito para reemplazar overflow:hidden */
+        border-radius: var(--radius) var(--radius) 0 0;
     }
 
         .card-mega .card-head.red {
@@ -217,6 +223,7 @@ body {
     width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    border-radius: 0 0 var(--radius) var(--radius);
 }
 
 .table-mega {
@@ -290,6 +297,7 @@ body {
     padding: 4px 10px;
     border-radius: 20px;
     font-size: 12px;
+    display: inline-block;
 }
 
 .badge-inactivo {
@@ -298,6 +306,7 @@ body {
     padding: 4px 10px;
     border-radius: 20px;
     font-size: 12px;
+    display: inline-block;
 }
 
 .badge-pendiente {
@@ -306,6 +315,7 @@ body {
     padding: 4px 10px;
     border-radius: 20px;
     font-size: 12px;
+    display: inline-block;
 }
 
 .badge-atendido {
@@ -314,6 +324,7 @@ body {
     padding: 4px 10px;
     border-radius: 20px;
     font-size: 12px;
+    display: inline-block;
 }
 
 .badge-cancelado {
@@ -322,6 +333,7 @@ body {
     padding: 4px 10px;
     border-radius: 20px;
     font-size: 12px;
+    display: inline-block;
 }
 
 /* =========================================
@@ -561,7 +573,7 @@ body.dark-mode .alert-mega.error {
 }
 
 /* =========================================
-   RESPONSIVE — UN SOLO BLOQUE
+   RESPONSIVE — ÚNICO BLOQUE
    ========================================= */
 @media (max-width: 768px) {
 
@@ -574,14 +586,20 @@ body.dark-mode .alert-mega.error {
         font-size: 16px;
     }
 
-    /* Navbar */
+    /* Desactivar hover transform en mobile */
+    .card-mega:hover {
+        transform: none;
+        box-shadow: var(--shadow);
+    }
+
+    /* Card header en mobile */
     .card-mega .card-head {
         flex-direction: column;
         gap: 10px;
         align-items: flex-start !important;
     }
 
-    /* Tabla → Cards apiladas en mobile */
+    /* Tabla → Cards apiladas */
     .table-mega thead {
         display: none;
     }
@@ -602,33 +620,52 @@ body.dark-mode .alert-mega.error {
             border: 1px solid var(--border-color);
         }
 
+        /* FIX: columna en vez de fila → label arriba, contenido abajo */
         .table-mega td {
-            padding: 6px 4px;
+            padding: 10px 12px;
             font-size: 14px;
             border: none;
+            border-bottom: 1px solid var(--border-color);
             display: flex;
-            align-items: center;
-            gap: 8px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
         }
+
+            .table-mega td:last-child {
+                border-bottom: none;
+            }
 
             .table-mega td::before {
                 content: attr(data-label);
                 font-weight: 600;
                 color: var(--color-blue);
-                min-width: 90px;
                 font-size: 12px;
                 text-transform: uppercase;
-                flex-shrink: 0;
+                margin-bottom: 4px;
             }
 
+    /* Botones de acciones con ancho completo */
     .acciones-mobile {
+        display: flex;
         flex-wrap: wrap;
-        gap: 6px;
-        padding: 4px 0;
+        gap: 8px;
+        width: 100%;
+        margin-top: 6px;
     }
 
         .acciones-mobile a {
-            padding: 6px 14px;
-            font-size: 13px;
+            flex: 1;
+            text-align: center;
+            padding: 8px 14px;
         }
+
+    /* Stats en mobile */
+    .stat-numero {
+        font-size: 36px;
+    }
+
+    .stat-label {
+        font-size: 13px;
+    }
 }
