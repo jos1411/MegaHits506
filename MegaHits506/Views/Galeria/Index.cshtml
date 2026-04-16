@@ -8,6 +8,10 @@
 {
     <div class="alert-mega success mb-4">@TempData["Mensaje"]</div>
 }
+@if (TempData["Error"] != null)
+{
+    <div class="alert-mega error mb-4">@TempData["Error"]</div>
+}
 
 <div class="card-mega">
     <div class="card-head d-flex justify-content-between align-items-center">
@@ -15,54 +19,58 @@
         <a href="/Galeria/Crear" class="btn-blue">+ Agregar</a>
     </div>
     <div class="card-body-mega">
-        <table class="table-mega">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Vista previa</th>
-                    <th>Tipo</th>
-                    <th>Evento</th>
-                    <th>Descripción</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+        <div class="tabla-admin-wrapper">
+            <table class="table-mega">
+                <thead>
                     <tr>
-                        <td>@item.Identificador</td>
-                        <td>
-                            @if (item.Tipo == "FOTO")
-                            {
-                                <img src="@item.Url" style="width:60px;height:45px;object-fit:cover;border-radius:6px"
-                                     onerror="this.style.display='none'" />
-                            }
-                            else
-                            {
-                                <span class="badge-pendiente">VIDEO</span>
-                            }
-                        </td>
-                        <td>
-                            @if (item.Tipo == "FOTO")
-                            {
-                                <span class="badge-activo">📷 FOTO</span>
-                            }
-                            else
-                            {
-                                <span class="badge-pendiente">🎬 VIDEO</span>
-                            }
-                        </td>
-                        <td>@item.Evento</td>
-                        <td>@item.Descripcion</td>
-                        <td>
-                            <a href="/Galeria/Editar/@item.Identificador" class="btn-blue">Editar</a>
-                            <a href="/Galeria/Eliminar/@item.Identificador"
-                               class="btn-red ms-1"
-                               onclick="return confirm('¿Desea eliminar este elemento?')">Eliminar</a>
-                        </td>
+                        <th>#</th>
+                        <th>Vista previa</th>
+                        <th>Tipo</th>
+                        <th>Evento</th>
+                        <th>Descripción</th>
+                        <th>Acciones</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td data-label="#">@item.Identificador</td>
+                            <td data-label="Vista previa">
+                                @if (item.Tipo == "FOTO" && !string.IsNullOrEmpty(item.Url))
+                                {
+                                    <img src="@item.Url"
+                                         style="width:60px;height:45px;object-fit:cover;border-radius:6px"
+                                         onerror="this.style.display='none'" />
+                                }
+                                else if (item.Tipo == "VIDEO")
+                                {
+                                    <span class="badge-pendiente">VIDEO</span>
+                                }
+                            </td>
+                            <td data-label="Tipo">
+                                @if (item.Tipo == "FOTO")
+                                {
+                                    <span class="badge-activo">📷 FOTO</span>
+                                }
+                                else
+                                {
+                                    <span class="badge-pendiente">🎬 VIDEO</span>
+                                }
+                            </td>
+                            <td data-label="Evento">@item.Evento</td>
+                            <td data-label="Descripción">@item.Descripcion</td>
+                            <td data-label="Acciones">
+                                <div class="acciones-mobile">
+                                    <a href="/Galeria/Editar/@item.Identificador" class="btn-blue">Editar</a>
+                                    <a href="/Galeria/Eliminar/@item.Identificador" class="btn-red"
+                                       onclick="return confirm('¿Desea eliminar este elemento?')">Eliminar</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

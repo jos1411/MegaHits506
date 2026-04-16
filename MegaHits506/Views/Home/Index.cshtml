@@ -6,45 +6,87 @@
 <!-- HERO -->
 <section class="hero-section">
     <div class="container">
-        <h1> Mega Hits 506</h1>
-        <p>Animamos tus eventos con el mejor sonido y energía.</p>
+        <h1>🎵 Mega Hits 506</h1>
+        <p>La discomóvil #1 de Pérez Zeledón. Animamos tus eventos con el mejor sonido y energía.</p>
         <a href="/Home/Eventos" class="btn-blue"
            style="padding:14px 36px;font-size:17px;margin-right:12px">
             Ver Eventos
         </a>
-        <a href="/Acceso/Registro" class="btn-outline"
-           style="padding:14px 36px;font-size:17px;color:#fff;border-color:#fff">
+        <a href="/Acceso/Registro"
+           style="padding:14px 36px;font-size:17px;color:#fff;
+                  border:2px solid #fff;border-radius:var(--radius);
+                  text-decoration:none;display:inline-block;
+                  transition:all 0.3s">
             Solicitar Cotización
         </a>
+    </div>
+</section>
+
+<!-- ESTADÍSTICAS -->
+<section class="stats-section">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-6 col-md-3">
+                <div class="stat-item">
+                    <div class="stat-numero">5+</div>
+                    <div class="stat-label">Años de experiencia</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-item">
+                    <div class="stat-numero">50+</div>
+                    <div class="stat-label">Eventos realizados</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-item">
+                    <div class="stat-numero">100%</div>
+                    <div class="stat-label">Clientes satisfechos</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-item">
+                    <div class="stat-numero">1</div>
+                    <div class="stat-label">Región, Pérez Zeledón</div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
 <!-- SERVICIOS -->
 <section style="padding:80px 0;background:var(--bg-primary)">
     <div class="container">
-        <h2 style="text-align:center;color:var(--color-blue);margin-bottom:50px;font-size:36px">
+        <h2 style="text-align:center;color:var(--color-blue);
+                   margin-bottom:12px;font-size:36px">
             Nuestros Servicios
         </h2>
+        <p style="text-align:center;color:var(--text-secondary);
+                  margin-bottom:50px;max-width:500px;margin-left:auto;margin-right:auto">
+            Todo lo que necesitás para hacer de tu evento una experiencia inolvidable
+        </p>
         <div class="row g-4">
-            @foreach (var srv in new[] {
-                new { icono = "🎤", titulo = "Animación de Eventos",
-                      desc = "Animamos todo tipo de eventos con profesionalismo para que tu evento sea inolvidable." },
-                new { icono = "🔊", titulo = "Equipo de Sonido",
-                      desc = "Equipo de alta calidad para garantizar la mejor experiencia auditiva en tu evento." },
-                new { icono = "🎶", titulo = "Música para Todo Evento",
-                      desc = "Bodas, quinceañeras, cabalgatas, actividades religiosas y más. Nos adaptamos a tu estilo." }
-            })
-            {
-                <div class="col-md-4">
-                    <div class="card-mega" style="text-align:center;padding:10px">
-                        <div class="card-body-mega">
-                            <div style="font-size:48px;margin-bottom:16px">@srv.icono</div>
-                            <h4 style="color:var(--color-blue);margin-bottom:10px">@srv.titulo</h4>
-                            <p style="color:var(--text-secondary)">@srv.desc</p>
-                        </div>
-                    </div>
+            <div class="col-md-4">
+                <div class="mision-card" style="text-align:center">
+                    <div class="icono">🎤</div>
+                    <h4>Animación de Eventos</h4>
+                    <p>Animamos todo tipo de eventos con energía y profesionalismo para que tu celebración sea inolvidable.</p>
                 </div>
-            }
+            </div>
+            <div class="col-md-4">
+                <div class="mision-card" style="text-align:center">
+                    <div class="icono">🔊</div>
+                    <h4>Equipo de Sonido</h4>
+                    <p>Equipo de alta calidad para garantizar la mejor experiencia auditiva en tu evento.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mision-card" style="text-align:center">
+                    <div class="icono">🎶</div>
+                    <h4>Música para Todo Evento</h4>
+                    <p>Bodas, quinceañeras, cabalgatas, actividades religiosas y más. Nos adaptamos a tu estilo.</p>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -52,22 +94,85 @@
 <!-- SOBRE NOSOTROS -->
 <section style="padding:80px 0;background:var(--bg-secondary)">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-7">
-                <h2 style="color:var(--color-blue);margin-bottom:20px">Sobre Nosotros</h2>
-                <p style="color:var(--text-secondary);line-height:1.9;margin-bottom:16px">
-                    Mega Hits 506 es una discomóvil con amplia trayectoria en el cantón de Pérez Zeledón.
-                    A lo largo de los años hemos participado en eventos importantes como actividades de la
-                    iglesia, las cabalgatas anuales en el sector de Coopeagri y eventos en el estadio de
-                    Pérez Zeledón, ganándonos la confianza de nuestra comunidad.
-                </p>
-                <p style="color:var(--text-secondary);line-height:1.9">
-                    Nuestro compromiso es brindar una experiencia de entretenimiento de calidad,
-                    utilizando equipo de alta tecnología y priorizando siempre la satisfacción del cliente.
-                </p>
+        <h2 style="text-align:center;color:var(--color-blue);
+                   margin-bottom:12px;font-size:36px">
+            Sobre Nosotros
+        </h2>
+        <p style="text-align:center;color:var(--text-secondary);
+                  margin-bottom:50px">
+            Conocé quiénes somos y qué nos mueve
+        </p>
+
+        <!-- Visión y Misión -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-6">
+                <div class="mision-card">
+                    <div class="icono">🎯</div>
+                    <h4>Nuestra Misión</h4>
+                    <p>
+                        Brindar una gran experiencia de entretenimiento mediante la mejora continua
+                        de nuestras ofertas y la utilización de equipo de alta calidad, priorizando
+                        siempre la satisfacción del consumidor.
+                    </p>
+                </div>
             </div>
-            <div class="col-md-5 text-center mt-4 mt-md-0">
-                <div style="font-size:120px">🎵</div>
+            <div class="col-md-6">
+                <div class="mision-card">
+                    <div class="icono">🚀</div>
+                    <h4>Nuestra Visión</h4>
+                    <p>
+                        Ser el proveedor de entretenimiento y sonido líder en Pérez Zeledón,
+                        escalando a eventos de mayor envergadura mientras se mantiene la
+                        satisfacción total del cliente.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Historia -->
+        <div class="row align-items-center">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <h4 style="color:var(--color-blue);margin-bottom:24px">
+                    📖 Nuestra Historia
+                </h4>
+                <div class="historia-timeline">
+                    <div class="historia-item">
+                        <h6>Inicio en Pérez Zeledón</h6>
+                        <p>Mega Hits 506 nació en el cantón de Pérez Zeledón con el objetivo de brindar entretenimiento de calidad a la comunidad.</p>
+                    </div>
+                    <div class="historia-item">
+                        <h6>Iglesia de Pérez Zeledón</h6>
+                        <p>Participación en actividades organizadas por la iglesia del cantón, ganando reconocimiento en la zona.</p>
+                    </div>
+                    <div class="historia-item">
+                        <h6>Cabalgatas en Coopeagri</h6>
+                        <p>Proveedor oficial de sonido en las cabalgatas anuales del sector de Coopeagri, uno de los eventos más importantes de la región.</p>
+                    </div>
+                    <div class="historia-item">
+                        <h6>Estadio de Pérez Zeledón</h6>
+                        <p>Participación en un evento de gran envergadura en el estadio del cantón, consolidando la reputación de la empresa.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 text-center">
+                <div style="background:var(--bg-card);border-radius:var(--radius);
+                            padding:40px;border:1px solid var(--border-color)">
+                    <div style="font-size:80px;margin-bottom:20px">🎵</div>
+                    <h4 style="color:var(--color-blue);margin-bottom:12px">
+                        Pérez Zeledón, Costa Rica
+                    </h4>
+                    <p style="color:var(--text-secondary)">
+                        📍 Arenilla de San Pedro
+                    </p>
+                    <p style="color:var(--text-secondary);margin-top:12px">
+                        Comprometidos con el entretenimiento y la satisfacción de cada cliente
+                        en cada evento que animamos.
+                    </p>
+                    <a href="/Home/Contact" class="btn-blue"
+                       style="margin-top:20px;display:inline-block">
+                        Contactanos
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -76,14 +181,51 @@
 <!-- WHATSAPP -->
 <section style="padding:80px 0;background:var(--color-blue);text-align:center">
     <div class="container">
-        <h2 style="color:#fff;margin-bottom:16px">¿Listo para contratar?</h2>
-        <p style="color:rgba(255,255,255,0.85);margin-bottom:30px">
+        <h2 style="color:#fff;margin-bottom:16px;font-size:36px">
+            ¿Listo para contratar?
+        </h2>
+        <p style="color:rgba(255,255,255,0.85);margin-bottom:30px;font-size:17px">
             Contactanos directamente por WhatsApp y coordinamos tu evento.
         </p>
         <a href="https://wa.me/50687660242" target="_blank"
-           style="background:#25d366;color:#fff;border:none;border-radius:10px;
-                  padding:14px 36px;font-size:17px;text-decoration:none;display:inline-block">
+           style="background:#25d366;color:#fff;border:none;
+                  border-radius:var(--radius);padding:14px 36px;
+                  font-size:17px;text-decoration:none;
+                  display:inline-block;transition:background 0.3s">
             💬 Escribinos por WhatsApp
         </a>
     </div>
 </section>
+
+<!-- FOOTER MEJORADO -->
+<footer class="footer-publico">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <h5>🎵 Mega Hits 506</h5>
+                <p>Discomóvil profesional en Pérez Zeledón, Costa Rica. Animamos tus eventos con el mejor sonido y energía.</p>
+            </div>
+            <div class="col-md-4">
+                <h5>Navegación</h5>
+                <a href="/Home/Index">Inicio</a>
+                <a href="/Home/Eventos">Eventos</a>
+                <a href="/Home/Galeria">Galería</a>
+                <a href="/Home/Contact">Contacto</a>
+            </div>
+            <div class="col-md-4">
+                <h5>Contacto</h5>
+                <p>📍 Arenilla de San Pedro, Pérez Zeledón</p>
+                <p>💬 <a href="https://wa.me/50687660242" target="_blank">+506 8766-0242</a></p>
+                <a href="/Cotizaciones/Solicitar"
+                   style="background:var(--color-blue);color:#fff;
+                          padding:8px 20px;border-radius:var(--radius);
+                          margin-top:8px;display:inline-block">
+                    Solicitar Cotización
+                </a>
+            </div>
+        </div>
+        <div class="footer-copy">
+            <p>© 2026 <span>Mega Hits 506</span> — Pérez Zeledón, Costa Rica. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</footer>

@@ -3,39 +3,129 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<div class="card-mega" style="max-width:750px; margin:0 auto">
+<div class="card-mega" style="max-width:800px; margin:0 auto">
     <div class="card-head">❓ Ayuda del Sistema</div>
     <div class="card-body-mega">
 
-        <p style="color:var(--text-secondary); margin-bottom:24px">
-            Versión del sistema y guía de uso para el administrador.
-        </p>
-
-        <div style="background:var(--bg-secondary);border-radius:var(--radius);padding:16px 20px;margin-bottom:12px">
-            <strong>Mega Hits 506 — Sistema Web</strong><br />
-            <small style="color:var(--text-secondary)">
-                Desarrollado por José Daniel Monge Varela —
-                Universidad Castro Carazo, 2026
-            </small><br />
-            <span class="badge-activo mt-2 d-inline-block">Versión 1.0</span>
+        <!-- VERSIÓN -->
+        <div style="background:var(--bg-secondary);border-radius:var(--radius);
+                    padding:20px 24px;margin-bottom:24px;
+                    border-left:4px solid var(--color-blue)">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>
+                    <strong style="font-size:16px">Mega Hits 506 — Sistema Web</strong><br />
+                    <small style="color:var(--text-secondary)">
+                        Desarrollado por José Daniel Monge Varela —
+                        Universidad Castro Carazo, 2026
+                    </small>
+                </div>
+                <span class="badge-activo" style="font-size:14px;padding:8px 16px">
+                    Versión 1.0
+                </span>
+            </div>
         </div>
 
-        @foreach (var item in new[] {
-            new { titulo = "Gestión de Eventos", desc = "Crear, editar e inactivar eventos desde el menú Eventos." },
-            new { titulo = "Gestión de Galería", desc = "Subir fotos y videos asociados a eventos. Usá URLs de imágenes o videos de YouTube." },
-            new { titulo = "Gestión de Usuarios", desc = "Ver, editar e inactivar usuarios. Solo el administrador tiene acceso." },
-            new { titulo = "Solicitudes de Cotización", desc = "Ver solicitudes de clientes y cambiar su estado a ATENDIDO o CANCELADO." },
-            new { titulo = "Cerrar Sesión", desc = "Siempre cerrá sesión al terminar para proteger la información." }
-        })
-        {
-            <div style="background:var(--bg-secondary);border-radius:var(--radius);padding:16px 20px;margin-bottom:12px">
-                <strong style="color:var(--color-blue)">@item.titulo</strong>
-                <p style="color:var(--text-secondary);margin:4px 0 0;font-size:14px">@item.desc</p>
-            </div>
-        }
+        <!-- MANUAL DE USUARIO -->
+        <h5 style="color:var(--color-blue);margin-bottom:16px">
+            📖 Manual de Usuario
+        </h5>
 
-        <div class="mt-4">
+        <div style="background:var(--bg-secondary);border-radius:var(--radius);
+                    padding:24px;margin-bottom:24px;text-align:center;
+                    border:2px dashed var(--border-color)">
+            <div style="font-size:48px;margin-bottom:12px">📄</div>
+            <h6 style="color:var(--text-secondary);margin-bottom:8px">
+                Manual de Usuario — Próximamente
+            </h6>
+            <p style="color:var(--text-secondary);font-size:14px;margin:0">
+                El manual de usuario estará disponible en esta sección
+                una vez que sea elaborado.
+            </p>
+        </div>
+
+        <!-- GUÍA RÁPIDA -->
+        <h5 style="color:var(--color-blue);margin-bottom:16px">
+            ⚡ Guía Rápida
+        </h5>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <div style="background:var(--bg-secondary);border-radius:var(--radius);
+                            padding:16px 20px">
+                    <h6 style="color:var(--color-blue);margin-bottom:6px">
+                        📅 Gestión de Eventos
+                    </h6>
+                    <p style="color:var(--text-secondary);margin:0;font-size:14px">
+                        Crear, editar e inactivar eventos. Podés subir imagen de portada
+                        desde tu dispositivo.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div style="background:var(--bg-secondary);border-radius:var(--radius);
+                            padding:16px 20px">
+                    <h6 style="color:var(--color-blue);margin-bottom:6px">
+                        🖼️ Gestión de Galería
+                    </h6>
+                    <p style="color:var(--text-secondary);margin:0;font-size:14px">
+                        Subir fotos desde el dispositivo (máx 10MB) y agregar
+                        videos de YouTube por URL.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div style="background:var(--bg-secondary);border-radius:var(--radius);
+                            padding:16px 20px">
+                    <h6 style="color:var(--color-blue);margin-bottom:6px">
+                        👤 Gestión de Usuarios
+                    </h6>
+                    <p style="color:var(--text-secondary);margin:0;font-size:14px">
+                        Ver, editar e inactivar usuarios. No es posible
+                        inactivar el propio usuario activo.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div style="background:var(--bg-secondary);border-radius:var(--radius);
+                            padding:16px 20px">
+                    <h6 style="color:var(--color-blue);margin-bottom:6px">
+                        📋 Solicitudes de Cotización
+                    </h6>
+                    <p style="color:var(--text-secondary);margin:0;font-size:14px">
+                        Ver solicitudes de clientes y cambiar su estado a
+                        ATENDIDO o CANCELADO desde el detalle.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div style="background:var(--bg-secondary);border-radius:var(--radius);
+                            padding:16px 20px">
+                    <h6 style="color:var(--color-blue);margin-bottom:6px">
+                        🌙 Modo Oscuro
+                    </h6>
+                    <p style="color:var(--text-secondary);margin:0;font-size:14px">
+                        Usá el botón 🌙 en el menú para alternar entre
+                        modo claro y modo oscuro. Se guarda automáticamente.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div style="background:var(--bg-secondary);border-radius:var(--radius);
+                            padding:16px 20px">
+                    <h6 style="color:var(--color-blue);margin-bottom:6px">
+                        🔒 Cerrar Sesión
+                    </h6>
+                    <p style="color:var(--text-secondary);margin:0;font-size:14px">
+                        Siempre cerrá sesión al terminar. La sesión expira
+                        automáticamente a los 30 minutos de inactividad.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-2">
             <a href="/Eventos" class="btn-outline">← Volver al panel</a>
         </div>
+
     </div>
 </div>

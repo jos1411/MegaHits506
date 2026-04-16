@@ -19,44 +19,47 @@
         <a href="/Usuarios/Crear" class="btn-blue">+ Nuevo Usuario</a>
     </div>
     <div class="card-body-mega">
-        <table class="table-mega">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nombre</th>
-                    <th>Correo</th>
-                    <th>Rol</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+        <div class="tabla-admin-wrapper">
+            <table class="table-mega">
+                <thead>
                     <tr>
-                        <td>@item.Identificador</td>
-                        <td>@item.NombreCompleto</td>
-                        <td>@item.Correo</td>
-                        <td>@item.Rol</td>
-                        <td>
-                            @if (item.Estado == "A")
-                            {
-                                <span class="badge-activo">Activo</span>
-                            }
-                            else
-                            {
-                                <span class="badge-inactivo">Inactivo</span>
-                            }
-                        </td>
-                        <td>
-                            <a href="/Usuarios/Editar/@item.Identificador" class="btn-blue">Editar</a>
-                            <a href="/Usuarios/Eliminar/@item.Identificador"
-                               class="btn-red ms-1"
-                               onclick="return confirm('¿Desea inactivar este usuario?')">Inactivar</a>
-                        </td>
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Rol</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td data-label="#">@item.Identificador</td>
+                            <td data-label="Nombre">@item.NombreCompleto</td>
+                            <td data-label="Correo">@item.Correo</td>
+                            <td data-label="Rol">@item.Rol</td>
+                            <td data-label="Estado">
+                                @if (item.Estado == "A")
+                                {
+                                    <span class="badge-activo">Activo</span>
+                                }
+                                else
+                                {
+                                    <span class="badge-inactivo">Inactivo</span>
+                                }
+                            </td>
+                            <td data-label="Acciones">
+                                <div class="acciones-mobile">
+                                    <a href="/Usuarios/Editar/@item.Identificador" class="btn-blue">Editar</a>
+                                    <a href="/Usuarios/Eliminar/@item.Identificador" class="btn-red"
+                                       onclick="return confirm('¿Desea inactivar este usuario?')">Inactivar</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

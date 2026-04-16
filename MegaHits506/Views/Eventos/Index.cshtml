@@ -19,44 +19,47 @@
         <a href="/Eventos/Crear" class="btn-blue">+ Nuevo Evento</a>
     </div>
     <div class="card-body-mega">
-        <table class="table-mega">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Título</th>
-                    <th>Fecha</th>
-                    <th>Ubicación</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+        <div class="tabla-admin-wrapper">
+            <table class="table-mega">
+                <thead>
                     <tr>
-                        <td>@item.Identificador</td>
-                        <td>@item.Titulo</td>
-                        <td>@(item.FechaEvento.HasValue ? item.FechaEvento.Value.ToString("dd/MM/yyyy") : "-")</td>
-                        <td>@item.Ubicacion</td>
-                        <td>
-                            @if (item.Estado == "A")
-                            {
-                                <span class="badge-activo">Activo</span>
-                            }
-                            else
-                            {
-                                <span class="badge-inactivo">Inactivo</span>
-                            }
-                        </td>
-                        <td>
-                            <a href="/Eventos/Editar/@item.Identificador" class="btn-blue">Editar</a>
-                            <a href="/Eventos/Eliminar/@item.Identificador"
-                               class="btn-red ms-1"
-                               onclick="return confirm('¿Desea eliminar este evento?')">Eliminar</a>
-                        </td>
+                        <th>#</th>
+                        <th>Título</th>
+                        <th>Fecha</th>
+                        <th>Ubicación</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td data-label="#">@item.Identificador</td>
+                            <td data-label="Título">@item.Titulo</td>
+                            <td data-label="Fecha">@(item.FechaEvento.HasValue ? item.FechaEvento.Value.ToString("dd/MM/yyyy") : "-")</td>
+                            <td data-label="Ubicación">@item.Ubicacion</td>
+                            <td data-label="Estado">
+                                @if (item.Estado == "A")
+                                {
+                                    <span class="badge-activo">Activo</span>
+                                }
+                                else
+                                {
+                                    <span class="badge-inactivo">Inactivo</span>
+                                }
+                            </td>
+                            <td data-label="Acciones">
+                                <div class="acciones-mobile">
+                                    <a href="/Eventos/Editar/@item.Identificador" class="btn-blue">Editar</a>
+                                    <a href="/Eventos/Eliminar/@item.Identificador" class="btn-red"
+                                       onclick="return confirm('¿Desea eliminar este evento?')">Eliminar</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

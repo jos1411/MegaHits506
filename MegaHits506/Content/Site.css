@@ -13,7 +13,6 @@
     --text-navbar: #ffffff;
     --border-color: #dee2e6;
     --shadow: 0 2px 12px rgba(0,0,0,0.08);
-    /* Paleta de acciones */
     --color-blue: #1a73e8;
     --color-blue-dark: #1557b0;
     --color-red: #e53935;
@@ -61,7 +60,7 @@ body {
    ========================================= */
 .navbar-mega {
     background-color: var(--bg-navbar);
-    padding: 0 0;
+    padding: 0;
     box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     position: sticky;
     top: 0;
@@ -214,6 +213,12 @@ body {
 /* =========================================
    TABLAS
    ========================================= */
+.tabla-admin-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
 .table-mega {
     width: 100%;
     border-collapse: collapse;
@@ -371,7 +376,7 @@ body.dark-mode .alert-mega.error {
     }
 
 /* =========================================
-   FOOTER
+   FOOTER ADMIN
    ========================================= */
 .footer-mega {
     background-color: var(--bg-navbar);
@@ -387,7 +392,7 @@ body.dark-mode .alert-mega.error {
     }
 
 /* =========================================
-   PÁGINA PÚBLICA - HERO
+   HERO PÚBLICO
    ========================================= */
 .hero-section {
     background: linear-gradient(135deg, #1a1a2a 0%, #1a73e8 100%);
@@ -410,9 +415,157 @@ body.dark-mode .alert-mega.error {
     }
 
 /* =========================================
-   RESPONSIVE
+   HOME — ESTADÍSTICAS
+   ========================================= */
+.stats-section {
+    padding: 60px 0;
+    background: var(--color-blue);
+    text-align: center;
+}
+
+.stat-item {
+    padding: 20px;
+}
+
+.stat-numero {
+    font-size: 48px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 15px;
+    color: rgba(255,255,255,0.85);
+    margin-top: 8px;
+}
+
+/* =========================================
+   HOME — MISIÓN / VISIÓN CARDS
+   ========================================= */
+.mision-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 30px;
+    height: 100%;
+    transition: transform var(--transition);
+}
+
+    .mision-card:hover {
+        transform: translateY(-4px);
+    }
+
+    .mision-card .icono {
+        font-size: 40px;
+        margin-bottom: 16px;
+    }
+
+    .mision-card h4 {
+        color: var(--color-blue);
+        margin-bottom: 12px;
+    }
+
+    .mision-card p {
+        color: var(--text-secondary);
+        line-height: 1.8;
+    }
+
+/* =========================================
+   HOME — TIMELINE HISTORIA
+   ========================================= */
+.historia-timeline {
+    border-left: 3px solid var(--color-blue);
+    padding-left: 24px;
+    margin-left: 12px;
+}
+
+.historia-item {
+    position: relative;
+    margin-bottom: 28px;
+}
+
+    .historia-item::before {
+        content: '';
+        position: absolute;
+        left: -31px;
+        top: 6px;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: var(--color-blue);
+        border: 3px solid var(--bg-primary);
+    }
+
+    .historia-item h6 {
+        color: var(--color-blue);
+        font-weight: 700;
+        margin-bottom: 4px;
+    }
+
+    .historia-item p {
+        color: var(--text-secondary);
+        font-size: 14px;
+        margin: 0;
+    }
+
+/* =========================================
+   FOOTER PÚBLICO
+   ========================================= */
+.footer-publico {
+    background: var(--bg-navbar);
+    padding: 50px 0 24px;
+    margin-top: 60px;
+}
+
+    .footer-publico h5 {
+        color: #fff;
+        margin-bottom: 16px;
+        font-size: 16px;
+    }
+
+    .footer-publico p,
+    .footer-publico a {
+        color: rgba(255,255,255,0.6);
+        font-size: 14px;
+        text-decoration: none;
+        display: block;
+        margin-bottom: 8px;
+        line-height: 1.6;
+    }
+
+        .footer-publico a:hover {
+            color: var(--color-blue);
+        }
+
+.footer-copy {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 30px;
+    padding-top: 20px;
+    text-align: center;
+    color: rgba(255,255,255,0.4);
+    font-size: 13px;
+}
+
+    .footer-copy span {
+        color: var(--color-blue);
+    }
+
+/* =========================================
+   ACCIONES MOBILE
+   ========================================= */
+.acciones-mobile {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+/* =========================================
+   RESPONSIVE — UN SOLO BLOQUE
    ========================================= */
 @media (max-width: 768px) {
+
+    /* Hero */
     .hero-section h1 {
         font-size: 32px;
     }
@@ -421,12 +574,61 @@ body.dark-mode .alert-mega.error {
         font-size: 16px;
     }
 
-    .table-mega {
-        font-size: 12px;
+    /* Navbar */
+    .card-mega .card-head {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start !important;
     }
 
-        .table-mega thead th,
-        .table-mega tbody td {
-            padding: 8px 10px;
+    /* Tabla → Cards apiladas en mobile */
+    .table-mega thead {
+        display: none;
+    }
+
+    .table-mega,
+    .table-mega tbody,
+    .table-mega tr,
+    .table-mega td {
+        display: block;
+        width: 100%;
+    }
+
+        .table-mega tr {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .table-mega td {
+            padding: 6px 4px;
+            font-size: 14px;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .table-mega td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: var(--color-blue);
+                min-width: 90px;
+                font-size: 12px;
+                text-transform: uppercase;
+                flex-shrink: 0;
+            }
+
+    .acciones-mobile {
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 4px 0;
+    }
+
+        .acciones-mobile a {
+            padding: 6px 14px;
+            font-size: 13px;
         }
 }
