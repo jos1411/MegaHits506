@@ -15,11 +15,9 @@
         }
 
         @using (Html.BeginForm("Crear", "Galeria", FormMethod.Post,
-                new { enctype = "multipart/form-data", id = "formGaleria" }))
+                new { enctype = "multipart/form-data" }))
         {
-            <!-- Campo oculto que guarda la URL real que se envía -->
-            <input type="hidden" name="Url" id="urlFinal"
-                   value="@(Model != null ? Model.Url : "")" />
+            <input type="hidden" name="Url" id="urlFinal" value="" />
 
             <div class="form-mega">
                 <div class="mb-3">
@@ -46,11 +44,12 @@
                     </select>
                 </div>
 
-                <!-- FOTO -->
+                <!-- FOTO: solo subida de archivo -->
                 <div id="campoFoto" style="display:@(tipoActual == "FOTO" ? "block" : "none")">
                     <div class="mb-3">
-                        <label>Subir foto desde tu dispositivo</label>
-                        <input type="file" name="archivoFoto" accept="image/*"
+                        <label>Seleccionar foto *</label>
+                        <input type="file" name="archivoFoto" id="archivoFoto"
+                               accept="image/*"
                                style="background:var(--bg-secondary);border:1px solid var(--border-color);
                                       color:var(--text-primary);border-radius:var(--radius);
                                       padding:8px;width:100%"
@@ -58,20 +57,13 @@
                         <img id="preview" src="" alt="Vista previa"
                              style="max-width:100%;border-radius:var(--radius);
                                     margin-top:10px;display:none;max-height:200px;object-fit:cover" />
-                    </div>
-                    <div class="mb-3">
-                        <label>O pegá una URL de imagen</label>
-                        <input type="text" id="urlFoto"
-                               value="@(tipoActual == "FOTO" && Model != null ? Model.Url : "")"
-                               placeholder="https://ejemplo.com/foto.jpg"
-                               oninput="document.getElementById('urlFinal').value = this.value" />
                         <small style="color:var(--text-secondary)">
-                            Si subís un archivo, la URL se ignora.
+                            Formatos: JPG, PNG, GIF, WEBP. Máximo 10MB.
                         </small>
                     </div>
                 </div>
 
-                <!-- VIDEO -->
+                <!-- VIDEO: URL de YouTube -->
                 <div id="campoVideo" style="display:@(tipoActual == "VIDEO" ? "block" : "none")">
                     <div class="mb-3">
                         <label>URL de YouTube *</label>
@@ -80,8 +72,7 @@
                                placeholder="https://www.youtube.com/watch?v=..."
                                oninput="document.getElementById('urlFinal').value = this.value" />
                         <small style="color:var(--text-secondary)">
-                            Pegá el enlace normal de YouTube. Se convierte automáticamente.<br />
-                            Ejemplo: https://www.youtube.com/watch?v=CODIGO
+                            Pegá el enlace normal de YouTube. Se convierte automáticamente.
                         </small>
                     </div>
                 </div>
@@ -105,7 +96,6 @@
     function mostrarCampos(tipo) {
         document.getElementById('campoFoto').style.display = tipo === 'FOTO' ? 'block' : 'none';
         document.getElementById('campoVideo').style.display = tipo === 'VIDEO' ? 'block' : 'none';
-        // Limpiar urlFinal al cambiar tipo
         document.getElementById('urlFinal').value = '';
     }
 
@@ -121,15 +111,11 @@
         }
     }
 
-    // Al cargar la página, sincronizar el campo correcto con urlFinal
     window.onload = function () {
         var tipo = document.getElementById('selectTipo').value;
         if (tipo === 'VIDEO') {
             var v = document.getElementById('urlVideo');
             if (v) document.getElementById('urlFinal').value = v.value;
-        } else if (tipo === 'FOTO') {
-            var f = document.getElementById('urlFoto');
-            if (f) document.getElementById('urlFinal').value = f.value;
         }
     };
 </script>
