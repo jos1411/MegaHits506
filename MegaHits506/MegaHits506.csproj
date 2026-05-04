@@ -157,6 +157,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\img\LogoDiscoMovil.png" />
     <Content Include="Content\uploads\placeholder.txt" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
