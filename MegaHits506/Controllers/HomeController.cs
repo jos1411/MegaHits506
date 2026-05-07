@@ -1,4 +1,7 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.IO;
+using System.Web;
+using System.Web.Mvc;
 using MegaHits506.AccesoDatos;
 
 namespace MegaHits506.Controllers
@@ -57,7 +60,67 @@ namespace MegaHits506.Controllers
             if (!SesionActiva() || !EsAdmin())
                 return RedirectToAction("Login", "Acceso");
 
+            CargarManualUrl();
             return View();
+        }
+
+        // POST: /Home/About (subir manual, solo admin)
+        [HttpPost]
+        public ActionResult About(HttpPostedFileBase archivoManual)
+        {
+            if (!SesionActiva() || !EsAdmin())
+                return RedirectToAction("Login", "Acceso");
+
+            if (archivoManual != null && archivoManual.ContentLength > 0)
+            {
+                string extension = Path.GetExtension(archivoManual.FileName).ToLower();
+                string[] permitidos = { ".pdf", ".docx" };
+
+                if (Array.IndexOf(permitidos, extension) < 0)
+                {
+                    ViewBag.Error = "Solo se permiten archivos PDF o DOCX.";
+                    CargarManualUrl();
+                    return View();
+                }
+
+                string carpeta = Server.MapPath("~/Content/manual/");
+                if (!Directory.Exists(carpeta))
+                    Directory.CreateDirectory(carpeta);
+
+                // Eliminar versión anterior si existe
+                foreach (var ext in new[] { ".pdf", ".docx" })
+                {
+                    string viejo = carpeta + "Manual_Usuario_MegaHits506" + ext;
+                    if (System.IO.File.Exists(viejo))
+                        System.IO.File.Delete(viejo);
+                }
+
+                string nombreFijo = "Manual_Usuario_MegaHits506" + extension;
+                archivoManual.SaveAs(carpeta + nombreFijo);
+                TempData["Mensaje"] = "Manual actualizado correctamente.";
+            }
+            else
+            {
+                ViewBag.Error = "Por favor, seleccioná un archivo.";
+            }
+
+            CargarManualUrl();
+            return View();
+        }
+
+        private void CargarManualUrl()
+        {
+            string carpeta = Server.MapPath("~/Content/manual/");
+            foreach (var ext in new[] { ".pdf", ".docx" })
+            {
+                string ruta = carpeta + "Manual_Usuario_MegaHits506" + ext;
+                if (System.IO.File.Exists(ruta))
+                {
+                    ViewBag.ManualUrl = "/Content/manual/Manual_Usuario_MegaHits506" + ext;
+                    return;
+                }
+            }
+            ViewBag.ManualUrl = null;
         }
     }
 }
