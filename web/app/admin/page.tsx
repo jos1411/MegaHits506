@@ -1,18 +1,45 @@
-import { Calendar, Film, Image } from "lucide-react";
+import { CalendarDays, Calendar, Film, Image, TrendingUp } from "lucide-react";
 import Link from "next/link";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/server";
 
+async function getUpcomingEvents(supabase: Awaited<ReturnType<typeof createClient>>) {
+  const now = new Date().toISOString();
+  const { data } = await supabase
+    .from("events")
+    .select("*")
+    .gte("event_date", now)
+    .order("event_date", { ascending: true })
+    .limit(3);
+  return data ?? [];
+}
+
+async function getRecentPhotosCount(supabase: Awaited<ReturnType<typeof createClient>>) {
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+  const { count } = await supabase
+    .from("photos")
+    .select("*", { count: "exact", head: true })
+    .gte("created_at", thirtyDaysAgo);
+  return count ?? 0;
+}
+
 export default async function AdminDashboard() {
   const supabase = await createClient();
 
-  const [{ count: photoCount }, { count: videoCount }, { count: eventCount }] =
-    await Promise.all([
-      supabase.from("photos").select("*", { count: "exact", head: true }),
-      supabase.from("videos").select("*", { count: "exact", head: true }),
-      supabase.from("events").select("*", { count: "exact", head: true }),
-    ]);
+  const [
+    { count: photoCount },
+    { count: videoCount },
+    { count: eventCount },
+    upcomingEvents,
+    recentPhotos,
+  ] = await Promise.all([
+    supabase.from("photos").select("*", { count: "exact", head: true }),
+    supabase.from("videos").select("*", { count: "exact", head: true }),
+    supabase.from("events").select("*", { count: "exact", head: true }),
+    getUpcomingEvents(supabase),
+    getRecentPhotosCount(supabase),
+  ]);
 
   const stats = [
     {
@@ -56,7 +83,7 @@ export default async function AdminDashboard() {
           const Icon = stat.icon;
           return (
             <Link key={stat.label} href={stat.href}>
-              <Card className="transition-colors hover:bg-muted/50">
+              <Card className="transition-all hover:bg-muted/50 hover:shadow-md">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle>{stat.label}</CardTitle>
@@ -75,6 +102,77 @@ export default async function AdminDashboard() {
             </Link>
           );
         })}
+      </div>
+
+      {/* Mini charts row */}
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <TrendingUp className="size-4 text-primary" />
+              <CardTitle>Actividad reciente</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">Fotos este mes</span>
+                <span className="font-mono font-semibold">{recentPhotos}</span>
+              </div>
+              <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+                <div
+                  className="h-full rounded-full bg-primary transition-all"
+                  style={{ width: `${Math.min(100, (recentPhotos / Math.max((photoCount ?? 1), 1)) * 100)}%` }}
+                />
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {recentPhotos} de {photoCount ?? 0} fotos subidas en los últimos 30 días
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <CalendarDays className="size-4 text-primary" />
+              <CardTitle>Próximos eventos</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {upcomingEvents.length === 0 ? (
+              <p className="text-sm text-muted-foreground py-4 text-center">
+                No hay eventos próximos programados
+              </p>
+            ) : (
+              <div className="space-y-3">
+                {upcomingEvents.map((event) => (
+                  <Link
+                    key={event.id}
+                    href={`/admin/events/${event.id}`}
+                    className="flex items-center justify-between rounded-lg p-2 transition-colors hover:bg-muted"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-medium">{event.title}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {new Date(event.event_date).toLocaleDateString("es-CR", {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        })}
+                      </p>
+                    </div>
+                    {event.location && (
+                      <span className="ml-2 shrink-0 text-xs text-muted-foreground truncate max-w-[120px]">
+                        {event.location}
+                      </span>
+                    )}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
 
       {/* Quick links */}
@@ -113,7 +211,7 @@ function QuickLink({
 }) {
   return (
     <Link href={href}>
-      <Card className="transition-colors hover:bg-muted/50">
+      <Card className="transition-all hover:bg-muted/50 hover:shadow-sm">
         <CardContent className="py-4">
           <p className="font-medium">{label}</p>
           <p className="text-xs text-muted-foreground">{description}</p>

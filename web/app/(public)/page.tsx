@@ -51,14 +51,13 @@ const MILESTONES = [
 export default function LandingPage() {
   return (
     <>
-      {/* ─── Hero ─── */}
+      {/* Hero */}
       <section className="relative flex min-h-[90vh] items-center justify-center overflow-hidden">
-        {/* Background gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-purple-950 via-fuchsia-950 to-violet-950" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,hsl(270,100%,50%,0.15),transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,hsl(330,100%,50%,0.1),transparent_50%)]" />
 
-        <div className="relative z-10 mx-auto max-w-4xl px-4 py-20 text-center sm:px-6">
+        <div className="relative z-10 mx-auto max-w-4xl px-4 py-20 text-center sm:px-6 animate-in fade-in slide-in-from-top-8 duration-700">
           <div className="mb-8 flex justify-center">
             <Image
               src="/LogoDiscoMovil.png"
@@ -74,7 +73,7 @@ export default function LandingPage() {
             {SITE_NAME}
           </h1>
           <p className="mb-2 text-xl font-semibold text-fuchsia-300 sm:text-2xl">
-            ¡Hacemos bailar a Costa Rica!
+            Hacemos bailar a Costa Rica!
           </p>
           <p className="mb-8 max-w-2xl text-lg text-zinc-300 sm:text-xl">
             Animación profesional, sonido de primera calidad y música para tus eventos. Bodas,
@@ -86,25 +85,24 @@ export default function LandingPage() {
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-14 items-center justify-center gap-3 rounded-lg bg-[#25D366] px-8 text-base font-medium text-white transition-all hover:bg-[#1da851] active:translate-y-px"
+              className="inline-flex h-14 items-center justify-center gap-3 rounded-xl bg-[#25D366] px-8 text-base font-semibold text-white shadow-lg shadow-[#25D366]/30 transition-all hover:bg-[#1da851] hover:shadow-xl hover:shadow-[#25D366]/40 hover:-translate-y-0.5 active:translate-y-px"
             >
-                Contáctanos por WhatsApp
-                <ArrowRight className="size-5" />
+              Contáctanos por WhatsApp
+              <ArrowRight className="size-5" />
             </a>
             <a
-              href="/gallery"
-              className="inline-flex h-14 items-center justify-center rounded-lg border border-white/20 bg-white/10 px-8 text-base font-medium text-white backdrop-blur transition-all hover:bg-white/20 active:translate-y-px"
+              href="#servicios"
+              className="inline-flex h-14 items-center justify-center rounded-xl border border-white/20 bg-white/10 px-8 text-base font-medium text-white backdrop-blur transition-all hover:bg-white/20 active:translate-y-px"
             >
-              Ver Galería
+              Nuestros Servicios
             </a>
           </div>
         </div>
 
-        {/* Bottom fade */}
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" />
       </section>
 
-      {/* ─── Stats Bar ─── */}
+      {/* Stats Bar */}
       <section className="border-y bg-muted/30">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-4 py-12 sm:grid-cols-4 sm:px-6 lg:px-8">
           {STATS.map((stat) => (
@@ -116,8 +114,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ─── Services ─── */}
-      <section id="servicios" className="py-20 sm:py-28">
+      {/* Services */}
+      <section id="servicios" className="scroll-mt-20 py-20 sm:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12 text-center">
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Nuestros Servicios</h2>
@@ -128,7 +126,7 @@ export default function LandingPage() {
 
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {SERVICES.map((service) => (
-              <Card key={service.title} className="group border-0 bg-muted/30 p-6 transition-all hover:bg-muted/50 hover:shadow-lg">
+              <Card key={service.title} className="group border-0 bg-muted/30 p-6 transition-all hover:bg-muted/50 hover:shadow-lg hover:-translate-y-1">
                 <CardContent className="p-0">
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                     <service.icon className="size-6" />
@@ -142,7 +140,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ─── About / Mission Vision ─── */}
+      {/* About / Mission Vision */}
       <section className="bg-muted/20 py-20 sm:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12 text-center">
@@ -183,7 +181,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ─── Timeline ─── */}
+      {/* Timeline */}
       <section className="py-20 sm:py-28">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12 text-center">
@@ -194,7 +192,6 @@ export default function LandingPage() {
           </div>
 
           <div className="relative">
-            {/* Vertical line */}
             <div className="absolute left-[19px] top-0 h-full w-px bg-border" />
 
             <div className="space-y-8">
@@ -215,11 +212,11 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ─── Final CTA ─── */}
+      {/* Final CTA */}
       <section className="bg-gradient-to-r from-purple-950 via-fuchsia-950 to-violet-950 py-20">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
           <h2 className="mb-4 text-3xl font-bold text-white sm:text-4xl">
-            ¿Listo para hacer de tu evento algo inolvidable?
+            Listo para hacer de tu evento algo inolvidable?
           </h2>
           <p className="mb-8 text-lg text-zinc-300">
             Contáctanos hoy y descubre cómo podemos hacer de tu celebración la mejor fiesta.
@@ -228,10 +225,10 @@ export default function LandingPage() {
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-14 items-center justify-center gap-3 rounded-lg bg-[#25D366] px-8 text-base font-medium text-white transition-all hover:bg-[#1da851] active:translate-y-px"
+            className="inline-flex h-14 items-center justify-center gap-3 rounded-xl bg-[#25D366] px-8 text-base font-semibold text-white shadow-lg shadow-[#25D366]/30 transition-all hover:bg-[#1da851] hover:shadow-xl hover:shadow-[#25D366]/40 hover:-translate-y-0.5 active:translate-y-px"
           >
-              Escríbenos por WhatsApp
-              <ArrowRight className="size-5" />
+            Escríbenos por WhatsApp
+            <ArrowRight className="size-5" />
           </a>
         </div>
       </section>

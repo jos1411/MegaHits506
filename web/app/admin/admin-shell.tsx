@@ -2,7 +2,9 @@
 
 import {
   Calendar,
+  ChevronRight,
   Film,
+  Home,
   Image,
   LayoutDashboard,
   LogOut,
@@ -10,11 +12,12 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 
 import { signOut } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { ToastProvider } from "@/components/ui/toast";
 import { SITE_NAME } from "@/lib/constants";
 
 const SIDEBAR_LINKS = [
@@ -23,6 +26,48 @@ const SIDEBAR_LINKS = [
   { href: "/admin/videos", label: "Videos", icon: Film },
   { href: "/admin/events", label: "Eventos", icon: Calendar },
 ];
+
+const BREADCRUMB_LABELS: Record<string, string> = {
+  photos: "Fotos",
+  videos: "Videos",
+  events: "Eventos",
+  new: "Nuevo",
+  edit: "Editar",
+};
+
+function Breadcrumbs() {
+  const pathname = usePathname();
+  const segments = pathname.split("/").filter(Boolean);
+
+  if (segments.length <= 1) return null;
+
+  const items = segments.map((seg, i) => {
+    const href = "/" + segments.slice(0, i + 1).join("/");
+    const label = BREADCRUMB_LABELS[seg] ?? decodeURIComponent(seg);
+    return { href, label, isLast: i === segments.length - 1 };
+  });
+
+  return (
+    <nav className="mb-4 flex items-center gap-1.5 text-sm text-muted-foreground">
+      <Link href="/admin" className="flex items-center gap-1 hover:text-foreground transition-colors">
+        <Home className="size-3.5" />
+        <span className="sr-only">Dashboard</span>
+      </Link>
+      {items.map((item) => (
+        <Fragment key={item.href}>
+          <ChevronRight className="size-3.5" />
+          {item.isLast ? (
+            <span className="font-medium text-foreground">{item.label}</span>
+          ) : (
+            <Link href={item.href} className="hover:text-foreground transition-colors">
+              {item.label}
+            </Link>
+          )}
+        </Fragment>
+      ))}
+    </nav>
+  );
+}
 
 function NavContent({ onNavigate }: { onNavigate: () => void }) {
   const pathname = usePathname();
@@ -77,59 +122,61 @@ export function AdminShell({
   }
 
   return (
-    <div className="flex min-h-screen">
-      {/* Desktop sidebar */}
-      <aside className="hidden w-60 shrink-0 border-r bg-sidebar md:flex md:flex-col">
-        <div className="flex h-16 items-center gap-3 border-b px-6">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
-            M
-          </div>
-          <span className="text-sm font-semibold">{SITE_NAME}</span>
-        </div>
-        <NavContent onNavigate={() => {}} />
-      </aside>
-
-      {/* Mobile sidebar */}
-      <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
-        <SheetTitle className="sr-only">Navegación</SheetTitle>
-
-        {/* Mobile hamburger button */}
-        <SheetTrigger
-          className="fixed top-3 left-3 z-40 inline-flex h-8 w-8 items-center justify-center rounded-lg hover:bg-muted md:hidden"
-          aria-label="Abrir menú"
-        >
-          <Menu className="size-5" />
-        </SheetTrigger>
-
-        <SheetContent side="left" className="w-60 p-0">
+    <ToastProvider>
+      <div className="flex min-h-screen">
+        {/* Desktop sidebar */}
+        <aside className="hidden w-60 shrink-0 border-r bg-sidebar md:flex md:flex-col">
           <div className="flex h-16 items-center gap-3 border-b px-6">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
               M
             </div>
             <span className="text-sm font-semibold">{SITE_NAME}</span>
           </div>
-          <NavContent onNavigate={() => setSidebarOpen(false)} />
-        </SheetContent>
-      </Sheet>
+          <NavContent onNavigate={() => {}} />
+        </aside>
 
-      {/* Main content area */}
-      <div className="flex flex-1 flex-col">
-        {/* Header */}
-        <header className="flex h-16 items-center justify-end gap-4 border-b bg-background px-4 sm:px-6 md:pl-6 lg:px-8">
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground">{userEmail}</span>
-            <form action={handleLogout}>
-              <Button variant="ghost" size="sm" type="submit">
-                <LogOut className="mr-2 size-4" />
-                Salir
-              </Button>
-            </form>
-          </div>
-        </header>
+        {/* Mobile sidebar */}
+        <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
+          <SheetTitle className="sr-only">Navegación</SheetTitle>
 
-        {/* Page content */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">{children}</main>
+          <SheetTrigger
+            className="fixed top-3 left-3 z-40 inline-flex h-8 w-8 items-center justify-center rounded-lg hover:bg-muted md:hidden"
+            aria-label="Abrir menú"
+          >
+            <Menu className="size-5" />
+          </SheetTrigger>
+
+          <SheetContent side="left" className="w-60 p-0">
+            <div className="flex h-16 items-center gap-3 border-b px-6">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
+                M
+              </div>
+              <span className="text-sm font-semibold">{SITE_NAME}</span>
+            </div>
+            <NavContent onNavigate={() => setSidebarOpen(false)} />
+          </SheetContent>
+        </Sheet>
+
+        {/* Main content area */}
+        <div className="flex flex-1 flex-col">
+          <header className="flex h-16 items-center justify-end gap-4 border-b bg-background px-4 sm:px-6 md:pl-6 lg:px-8">
+            <div className="flex items-center gap-4">
+              <span className="text-sm text-muted-foreground">{userEmail}</span>
+              <form action={handleLogout}>
+                <Button variant="ghost" size="sm" type="submit">
+                  <LogOut className="mr-2 size-4" />
+                  Salir
+                </Button>
+              </form>
+            </div>
+          </header>
+
+          <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+            <Breadcrumbs />
+            {children}
+          </main>
+        </div>
       </div>
-    </div>
+    </ToastProvider>
   );
 }
