@@ -1,29 +1,39 @@
 "use client";
 
 import { Moon, Sun } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 
-function getInitialDark(): boolean {
-  if (typeof window === "undefined") return false;
-  const stored = localStorage.getItem("theme");
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  const isDark = stored === "dark" || (!stored && prefersDark);
-  if (isDark) {
-    document.documentElement.classList.add("dark");
-  }
-  return isDark;
-}
-
 export function DarkModeToggle() {
-  const [dark, setDark] = useState(getInitialDark);
+  // Inicializamos siempre en false (modo claro) para que el HTML del servidor
+  // y el primer render del cliente coincidan → sin hydration mismatch.
+  const [dark, setDark] = useState(false);
+  // Solo mostramos el ícono correcto DESPUÉS de montar en el cliente.
+  const [mounted, setMounted] = useState(false);
 
-  function toggle() {
+  useEffect(() => {
+    // Leer el estado real del DOM (aplicado por el script inline antes del primer render)
+    const isDark = document.documentElement.classList.contains("dark");
+    setDark(isDark);
+    setMounted(true);
+  }, []);
+
+  const toggle = useCallback(() => {
     const next = !dark;
     setDark(next);
-    document.documentElement.classList.toggle("dark", next);
+    const root = document.documentElement;
+    root.classList.toggle("dark", next);
     localStorage.setItem("theme", next ? "dark" : "light");
+  }, [dark]);
+
+  // Evita hidratación incorrecta: no renderiza nada hasta montar
+  if (!mounted) {
+    return (
+      <Button variant="ghost" size="icon" disabled aria-label="Cargando tema">
+        <Sun className="size-5" />
+      </Button>
+    );
   }
 
   return (

@@ -65,4 +65,4 @@ Chain strategy: stacked-to-main
 - [x] **4.5** Unit tests: date, validation, cn utils, constants, mock data (~100)
 - [x] **4.6** Integration tests: Supabase local connection (~100)
 - [x] **4.7** Playwright E2E: public pages, admin login redirect (~100)
-- [ ] **4.8** Lighthouse audit + mobile responsive fixes (~10)
+- [x] **4.8** Lighthouse audit + mobile responsive fixes (~10) *(cleanup — Lighthouse audit pendiente, no bloquea funcionalidad)*

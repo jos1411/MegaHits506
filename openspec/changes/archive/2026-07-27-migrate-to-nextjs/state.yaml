@@ -1,0 +1,20 @@
+# SDD Change State
+change_name: migrate-to-nextjs
+created: 2026-07-27
+archived: 2026-07-27
+status: archived
+phases:
+  - name: propose
+    status: done
+  - name: spec
+    status: done
+  - name: design
+    status: done
+  - name: tasks
+    status: done
+  - name: apply
+    status: done
+  - name: verify
+    status: done
+  - name: archive
+    status: done

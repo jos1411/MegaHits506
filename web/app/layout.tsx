@@ -1,3 +1,4 @@
+import Script from "next/script";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
@@ -63,26 +64,31 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  var theme = localStorage.getItem('theme');
-                  if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                    document.documentElement.classList.add('dark');
-                  }
-                } catch(e) {}
-              })();
-            `,
-          }}
-        />
+        {/* Bloquea el flash de tema incorrecto antes de que React hidrate */}
+        <Script
+          id="dark-mode-init"
+          strategy="beforeInteractive"
+        >{`
+          (function() {
+            try {
+              var theme = localStorage.getItem('theme');
+              if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+              }
+            } catch(e) {}
+          })();
+        `}</Script>
       </head>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <Script
+          id="json-ld"
+          type="application/ld+json"
+          strategy="afterInteractive"
+        >
+          {JSON.stringify(jsonLd)}
+        </Script>
+      </body>
     </html>
   );
 }
