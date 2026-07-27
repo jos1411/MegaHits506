@@ -1,0 +1,34 @@
+# openspec/config.yaml
+schema: spec-driven
+
+context: |
+  Legacy project: ASP.NET MVC 5 (.NET 4.7.2) + SQL Server LocalDB — REFERENCE ONLY
+  Target stack: Next.js 14 + TypeScript + Tailwind CSS + Supabase (PostgreSQL / Auth / Storage)
+  Domain: Discomóvil Mega Hits 506 — galería/portafolio, eventos, cotizaciones, radio online
+  Auth: Admin-only (no client login — removed from legacy)
+  Architecture: Full rewrite from scratch. Legacy is reference/migration source only.
+  User: José (dev solo — sin equipo)
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+  specs:
+    - Use Given/When/Then for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+  design:
+    - Include sequence diagrams for complex flows
+    - Document architecture decisions with rationale
+  tasks:
+    - Group by phase, use hierarchical numbering
+    - Keep tasks completable in one session
+  apply:
+    guidelines:
+      - Follow existing code patterns
+    tdd: false
+    test_command: ""
+  verify:
+    test_command: "npm test"
+    build_command: "npm run build"
+    coverage_threshold: 0
+  archive:
+    - Warn before merging destructive deltas

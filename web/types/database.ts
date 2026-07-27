@@ -18,6 +18,7 @@ export interface Database {
           "id" | "created_at" | "updated_at"
         >;
         Update: Partial<Database["public"]["Tables"]["photos"]["Insert"]>;
+        Relationships: [];
       };
       videos: {
         Row: {
@@ -34,6 +35,7 @@ export interface Database {
           "id" | "created_at" | "updated_at"
         >;
         Update: Partial<Database["public"]["Tables"]["videos"]["Insert"]>;
+        Relationships: [];
       };
       events: {
         Row: {
@@ -52,6 +54,7 @@ export interface Database {
           "id" | "created_at" | "updated_at"
         >;
         Update: Partial<Database["public"]["Tables"]["events"]["Insert"]>;
+        Relationships: [];
       };
       event_photos: {
         Row: {
@@ -60,6 +63,7 @@ export interface Database {
         };
         Insert: Database["public"]["Tables"]["event_photos"]["Row"];
         Update: never;
+        Relationships: [];
       };
     };
     Views: Record<string, never>;

@@ -1,0 +1,7 @@
+# SDD Change State
+change_name: migrate-to-nextjs
+created: 2026-07-27
+status: proposed
+phases:
+  - name: propose
+    status: done

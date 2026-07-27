@@ -27,7 +27,7 @@ export async function revalidatePaths(paths: string[]) {
 export async function revalidateGallery() {
   revalidatePath("/gallery");
   revalidatePath("/gallery/videos");
-  revalidatePath("/admin/gallery");
+  revalidatePath("/admin/photos");
   revalidatePath("/admin/videos");
 }
 

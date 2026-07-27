@@ -1,6 +1,6 @@
 // WhatsApp
 export const WHATSAPP_NUMBER = "+506XXXXXXXX"; // TODO: replace with actual number
-export const WHATSAPP_MESSAGE = "Hola! Quiero más información sobre sus servicios.";
+export const WHATSAPP_MESSAGE = "Hola, me interesa contratar los servicios de Mega Hits 506";
 export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
 
 // Site
