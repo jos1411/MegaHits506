@@ -1,7 +1,7 @@
 "use client";
 
 import { AlertCircle, CheckCircle, Info, X } from "lucide-react";
-import { createContext, useCallback, useContext, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -27,16 +27,33 @@ export function useToast() {
 
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
+  const timerRef = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
+
+  // Clean up all timers on unmount
+  useEffect(() => {
+    const timers = timerRef.current;
+    return () => {
+      timers.forEach((timer) => clearTimeout(timer));
+      timers.clear();
+    };
+  }, []);
 
   const addToast = useCallback((message: string, type: ToastType = "success") => {
     const id = crypto.randomUUID();
     setToasts((prev) => [...prev, { id, message, type }]);
-    setTimeout(() => {
+    const timerId = setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
+      timerRef.current.delete(id);
     }, 4000);
+    timerRef.current.set(id, timerId);
   }, []);
 
   const removeToast = useCallback((id: string) => {
+    const timer = timerRef.current.get(id);
+    if (timer) {
+      clearTimeout(timer);
+      timerRef.current.delete(id);
+    }
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
 

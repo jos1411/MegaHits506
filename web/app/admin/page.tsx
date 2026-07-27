@@ -28,9 +28,9 @@ export default async function AdminDashboard() {
   const supabase = await createClient();
 
   const [
-    { count: photoCount },
-    { count: videoCount },
-    { count: eventCount },
+    { count: photoCount, error: photoErr },
+    { count: videoCount, error: videoErr },
+    { count: eventCount, error: eventErr },
     upcomingEvents,
     recentPhotos,
   ] = await Promise.all([
@@ -40,6 +40,11 @@ export default async function AdminDashboard() {
     getUpcomingEvents(supabase),
     getRecentPhotosCount(supabase),
   ]);
+
+  const dashboardErrors: string[] = [];
+  if (photoErr) dashboardErrors.push(`Fotos: ${photoErr.message}`);
+  if (videoErr) dashboardErrors.push(`Videos: ${videoErr.message}`);
+  if (eventErr) dashboardErrors.push(`Eventos: ${eventErr.message}`);
 
   const stats = [
     {
@@ -76,6 +81,15 @@ export default async function AdminDashboard() {
           Panel de administración de contenidos
         </p>
       </div>
+
+      {/* Error banner */}
+      {dashboardErrors.length > 0 && (
+        <div className="rounded-lg bg-destructive/10 px-4 py-3">
+          {dashboardErrors.map((msg, i) => (
+            <p key={i} className="text-sm text-destructive">{msg}</p>
+          ))}
+        </div>
+      )}
 
       {/* Stats cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

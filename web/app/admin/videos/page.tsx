@@ -57,13 +57,21 @@ export default function VideosPage() {
 
   async function fetchVideos() {
     const supabase = createClient();
-    const { data } = await supabase
-      .from("videos")
-      .select("*")
-      .order("created_at", { ascending: false });
+    try {
+      const { data, error } = await supabase
+        .from("videos")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-    if (data) setVideos(data);
-    setLoading(false);
+      if (error) throw error;
+
+      if (data) setVideos(data);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Error al cargar videos";
+      toast(message, "error");
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {

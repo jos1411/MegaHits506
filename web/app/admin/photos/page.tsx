@@ -48,6 +48,7 @@ export default function PhotosPage() {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [loading, setLoading] = useState(true);
   const [preview, setPreview] = useState<string | null>(null);
+  const [lastFetched, setLastFetched] = useState<Date | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Photo | null>(null);
   const [uploadOpen, setUploadOpen] = useState(false);
   const [dragOver, setDragOver] = useState(false);
@@ -71,17 +72,26 @@ export default function PhotosPage() {
 
   async function fetchPhotos() {
     const supabase = createClient();
-    const { data } = await supabase
-      .from("photos")
-      .select("*")
-      .order("created_at", { ascending: false });
+    try {
+      const { data, error } = await supabase
+        .from("photos")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-    if (data) {
-      setPhotos(data);
-      const estimatedBytes = data.length * 500 * 1024;
-      setStorageUsed(estimatedBytes);
+      if (error) throw error;
+
+      if (data) {
+        setPhotos(data);
+        const estimatedBytes = data.length * 500 * 1024;
+        setStorageUsed(estimatedBytes);
+      }
+      setLastFetched(new Date());
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Error al cargar fotos";
+      toast(message, "error");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   useEffect(() => {
@@ -115,12 +125,22 @@ export default function PhotosPage() {
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (file) {
+      // Revoke previous blob URL to avoid memory leaks
+      if (preview) URL.revokeObjectURL(preview);
       const objectUrl = URL.createObjectURL(file);
       setPreview(objectUrl);
     } else {
+      if (preview) URL.revokeObjectURL(preview);
       setPreview(null);
     }
   }
+
+  // Clean up blob URL on unmount or when preview changes
+  useEffect(() => {
+    return () => {
+      if (preview) URL.revokeObjectURL(preview);
+    };
+  }, [preview]);
 
   const handleDrag = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -328,12 +348,14 @@ export default function PhotosPage() {
           <div className="ml-auto flex items-center gap-1.5 text-xs text-muted-foreground">
             <Clock className="size-3.5" />
             Última actualización:{" "}
-            {new Date().toLocaleDateString("es-CR", {
-              day: "numeric",
-              month: "short",
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
+            {lastFetched
+              ? lastFetched.toLocaleDateString("es-CR", {
+                  day: "numeric",
+                  month: "short",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              : "—"}
           </div>
         </div>
       )}

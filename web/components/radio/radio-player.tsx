@@ -58,6 +58,14 @@ export function RadioPlayer() {
     };
   }, []);
 
+  // Sync initial volume to the audio element (mount only — intentional)
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (audio) {
+      audio.volume = volume;
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   const togglePlay = useCallback(() => {
     if (!audioRef.current || !streamUrl) return;
 
